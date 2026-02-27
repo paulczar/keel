@@ -1,6 +1,6 @@
 # AGENTS.md — Project Keel
 
-This file describes the Keel repository for AI agents working on the CMS itself. This is NOT the generated AGENTS.md that the sync script produces for downstream projects.
+This file describes the Keel repository for AI agents working on the CMS itself. This is NOT the generated AGENTS.md that the sync prompt produces for downstream projects.
 
 ## Project Overview
 
@@ -39,8 +39,6 @@ Keel is a Hugo-powered CMS that serves as a centralized source of truth for AI c
 │       └── content-before.html  # AI metadata box partial
 ├── assets/
 │   └── _custom.scss           # Metadata box styles
-├── scripts/
-│   └── sync-rules.sh          # Rule sync + AGENTS.md generator
 ├── themes/
 │   └── hugo-book/             # Theme (git submodule, pinned to v10)
 └── .github/
@@ -111,14 +109,9 @@ Higher layers fully replace lower-layer rules on the same topic. Non-conflicting
 
 ### Syncing Rules to a Target Repo
 
-**Primary method (interactive):** Use the sync prompt at `content/sync-prompt.md`. The user copies the prompt into their AI coding agent in the target project. The agent inspects the project, selects relevant rules, and generates the appropriate output formats.
+Use the sync prompt at `content/sync-prompt.md`. The user copies the prompt into their AI coding agent in the target project. The agent inspects the project, selects relevant rules, and generates the appropriate output formats.
 
-**CI/CD fallback (deterministic):** Use the bash script for pipelines:
-```bash
-./scripts/sync-rules.sh /path/to/target-repo
-```
-
-Both methods generate:
+The sync prompt generates:
 - `.agents/rules/keel/*.md` — Full rule files (Hugo metadata stripped)
 - `.cursor/rules/keel/*.mdc` — Cursor-compatible rule files
 - `AGENTS.md` — Routing table with globs, descriptions, and file references

@@ -112,7 +112,7 @@ Generate a routing table at the top:
 ```
 
 Include a `## Rule Details` section with each rule's description, globs, and
-a reference to the full file in `.agents/rules/`.
+a reference to the full file in `.agents/rules/keel/`.
 
 ### For `CLAUDE.md` (if applicable):
 Add a section pointing to the rule files:
@@ -139,18 +139,3 @@ After syncing, show me:
 2. Which output formats were generated
 3. A list of all files created or modified
 ```
-
----
-
-## For CI/CD Pipelines
-
-If you need deterministic, non-interactive syncing (e.g., in a GitHub Action or
-pre-commit hook), use the bash script instead:
-
-```bash
-./scripts/sync-rules.sh /path/to/target-repo
-```
-
-The bash script syncs **all** rules in **all** formats without inspection. It's
-a blunt instrument — the sync prompt above is the recommended approach for
-interactive use.

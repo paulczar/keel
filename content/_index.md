@@ -30,7 +30,7 @@ Each tool has its own format, directory structure, and activation model. Teams u
 
 Keel implements the [AGENTS.md open standard](https://agents.md/) as a Hugo-powered CMS. Rules are authored as Markdown files with YAML frontmatter — the same format used by AGENTS.md (adopted by 60k+ repos, supported by OpenAI Codex, GitHub Copilot, Google Jules, and Cursor).
 
-This site renders those rules as a **searchable documentation website for humans**, while the same files serve as **machine-actionable context for AI agents**. A sync script distributes rules to any project in all supported formats.
+This site renders those rules as a **searchable documentation website for humans**, while the same files serve as **machine-actionable context for AI agents**. A [sync prompt]({{< relref "/sync-prompt" >}}) distributes rules to any project in all supported formats.
 
 ## Core Principles
 
@@ -86,7 +86,7 @@ A centralized CMS with sync tooling enforces organizational standards. Teams sha
    - The agent adapts: it only syncs rules that match your stack and writes to the formats your project actually uses
 4. **Commit & deploy** — the target repo now has AI-agent-ready rules in all formats
 
-> **Why a prompt instead of a script?** Your AI agent can inspect the target project, skip irrelevant rules, detect which output formats are needed, and handle conflicts intelligently. A bash script can't. For CI/CD pipelines where you need deterministic output, a [bash script]({{< relref "/sync-prompt#for-cicd-pipelines" >}}) is also available.
+> **Why a prompt instead of a script?** Your AI agent can inspect the target project, skip irrelevant rules, detect which output formats are needed, and handle conflicts intelligently. A bash script can't.
 
 ### Rule Format
 
