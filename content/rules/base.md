@@ -61,3 +61,20 @@ These rules apply globally to all files in the project regardless of language or
 - Follow the Arrange-Act-Assert pattern
 - Keep tests independent — no shared mutable state between tests
 - Name tests descriptively: `should [expected behavior] when [condition]`
+
+## Rule Precedence
+
+Rules may be organized in three layers. When rules from different layers
+give conflicting guidance on the same topic, follow the highest-precedence
+layer:
+
+1. **Local** (`local/`) — project or team-specific standards. Highest precedence.
+2. **Org** (`org/`) — organizational standards.
+3. **Keel** (`keel/`) — global defaults. Lowest precedence.
+
+Rules at higher layers fully replace lower-layer rules on the same topic.
+If a local rule covers Kubernetes standards, follow it instead of the org
+or keel version — do not merge them.
+
+Rules that do not conflict are additive — follow all of them regardless
+of layer.

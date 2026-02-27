@@ -58,7 +58,7 @@ Each rule is a standalone file with clear scope defined by glob patterns. Rules 
 
 ### Hierarchical
 
-Base rules apply globally (`alwaysApply: true`). Language-specific and framework-specific rules activate only when matching files are in context.
+Base rules apply globally (`alwaysApply: true`). Language-specific and framework-specific rules activate only when matching files are in context. Rules support a [three-layer model]({{< relref "/layering" >}}) — global defaults (`keel/`), organizational standards (`org/`), and local overrides (`local/`) — with higher layers taking precedence on conflicting topics.
 
 {{< /columns >}}
 
