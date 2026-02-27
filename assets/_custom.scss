@@ -1,0 +1,76 @@
+.sentinel-meta {
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--gray-200);
+  border-radius: 0.25rem;
+  overflow: hidden;
+
+  table {
+    width: 100%;
+    margin: 0;
+    border-collapse: collapse;
+
+    tr {
+      border-bottom: 1px solid var(--gray-200);
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+
+    td {
+      padding: 0.5rem 0.75rem;
+      vertical-align: middle;
+    }
+  }
+}
+
+.sentinel-meta-label {
+  font-weight: 600;
+  white-space: nowrap;
+  width: 120px;
+  background: var(--gray-100);
+  color: var(--body-font-color);
+}
+
+.sentinel-glob {
+  display: inline-block;
+  margin: 0.1rem 0.25rem 0.1rem 0;
+  padding: 0.1rem 0.4rem;
+  background: var(--gray-100);
+  border-radius: 0.2rem;
+  font-size: 0.85em;
+}
+
+.sentinel-badge {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  border-radius: 0.2rem;
+  font-size: 0.85em;
+  font-weight: 600;
+}
+
+.sentinel-badge-yes {
+  background: #d4edda;
+  color: #155724;
+}
+
+.sentinel-badge-no {
+  background: var(--gray-100);
+  color: var(--body-font-color);
+}
+
+.sentinel-tag {
+  display: inline-block;
+  margin: 0.1rem 0.25rem 0.1rem 0;
+  padding: 0.1rem 0.5rem;
+  background: var(--color-link);
+  color: #fff;
+  border-radius: 0.2rem;
+  font-size: 0.8em;
+  text-decoration: none;
+
+  &:hover {
+    opacity: 0.85;
+    text-decoration: none;
+  }
+}

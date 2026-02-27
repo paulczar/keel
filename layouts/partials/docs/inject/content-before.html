@@ -1,0 +1,36 @@
+{{ if .Params.globs }}
+<div class="sentinel-meta">
+  <table>
+    <tbody>
+      {{ with .Params.globs }}
+      <tr>
+        <td class="sentinel-meta-label">Globs</td>
+        <td>
+          {{ range . }}<code class="sentinel-glob">{{ . }}</code> {{ end }}
+        </td>
+      </tr>
+      {{ end }}
+      {{ if isset .Params "alwaysapply" }}
+      <tr>
+        <td class="sentinel-meta-label">Always Apply</td>
+        <td>
+          {{ if .Params.alwaysApply }}
+            <span class="sentinel-badge sentinel-badge-yes">Yes</span>
+          {{ else }}
+            <span class="sentinel-badge sentinel-badge-no">No</span>
+          {{ end }}
+        </td>
+      </tr>
+      {{ end }}
+      {{ with .Params.tags }}
+      <tr>
+        <td class="sentinel-meta-label">Tags</td>
+        <td>
+          {{ range . }}<a href="{{ "tags/" | absURL }}{{ . | urlize }}/" class="sentinel-tag">{{ . }}</a> {{ end }}
+        </td>
+      </tr>
+      {{ end }}
+    </tbody>
+  </table>
+</div>
+{{ end }}

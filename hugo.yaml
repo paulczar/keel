@@ -1,0 +1,15 @@
+baseURL: https://example.org/
+languageCode: en-us
+title: Project Sentinel
+theme: hugo-book
+
+enableGitInfo: true
+
+taxonomies:
+  tag: tags
+
+params:
+  BookSection: rules
+  BookSearch: true
+  BookRepo: https://github.com/your-org/sentinel
+  BookEditPath: edit/main
