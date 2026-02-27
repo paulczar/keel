@@ -1,13 +1,13 @@
 ---
-title: "Project Sentinel"
+title: "Project Keel"
 type: docs
 ---
 
-# Project Sentinel
+# Project Keel
 
 **Standardized Rules for AI-Assisted Software Development**
 
-Sentinel is an opinionated [AGENTS.md](https://agents.md/) implementation — a governance CMS that produces AGENTS.md-compatible output following the Linux Foundation's open standard. Write your coding standards once; sync them everywhere.
+Keel is an opinionated [AGENTS.md](https://agents.md/) implementation — a governance CMS that produces AGENTS.md-compatible output following the Linux Foundation's open standard. Write your coding standards once; sync them everywhere.
 
 ---
 
@@ -28,7 +28,7 @@ Each tool has its own format, directory structure, and activation model. Teams u
 
 ## Our Approach
 
-Sentinel implements the [AGENTS.md open standard](https://agents.md/) as a Hugo-powered CMS. Rules are authored as Markdown files with YAML frontmatter — the same format used by AGENTS.md (adopted by 60k+ repos, supported by OpenAI Codex, GitHub Copilot, Google Jules, and Cursor).
+Keel implements the [AGENTS.md open standard](https://agents.md/) as a Hugo-powered CMS. Rules are authored as Markdown files with YAML frontmatter — the same format used by AGENTS.md (adopted by 60k+ repos, supported by OpenAI Codex, GitHub Copilot, Google Jules, and Cursor).
 
 This site renders those rules as a **searchable documentation website for humans**, while the same files serve as **machine-actionable context for AI agents**. A sync script distributes rules to any project in all supported formats.
 

@@ -1,10 +1,10 @@
-# AGENTS.md — Project Sentinel
+# AGENTS.md — Project Keel
 
-This file describes the Sentinel repository for AI agents working on the CMS itself. This is NOT the generated AGENTS.md that the sync script produces for downstream projects.
+This file describes the Keel repository for AI agents working on the CMS itself. This is NOT the generated AGENTS.md that the sync script produces for downstream projects.
 
 ## Project Overview
 
-Sentinel is a Hugo-powered CMS that serves as a centralized source of truth for AI coding rules. It renders Markdown rule files as a searchable documentation website for humans, while the same files serve as machine-actionable context for AI agents.
+Keel is a Hugo-powered CMS that serves as a centralized source of truth for AI coding rules. It renders Markdown rule files as a searchable documentation website for humans, while the same files serve as machine-actionable context for AI agents.
 
 ## Repository Structure
 

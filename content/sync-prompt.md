@@ -6,7 +6,7 @@ bookToc: true
 
 # Sync Prompt
 
-The primary way to distribute Sentinel rules is to **ask your AI coding agent to do it**. Copy the prompt below, paste it into your agent in the target project, and let it figure out which rules apply and where to put them.
+The primary way to distribute Keel rules is to **ask your AI coding agent to do it**. Copy the prompt below, paste it into your agent in the target project, and let it figure out which rules apply and where to put them.
 
 This works with any AI coding agent — Claude Code, Cursor, GitHub Copilot, Windsurf, Codex, or anything that accepts natural language instructions.
 
@@ -14,7 +14,7 @@ This works with any AI coding agent — Claude Code, Cursor, GitHub Copilot, Win
 
 1. Open your AI coding agent in the **target project** (the repo that should receive the rules)
 2. Copy the prompt below
-3. Replace `<SENTINEL_REPO_PATH>` with the path to your local Sentinel clone (or a GitHub raw URL)
+3. Replace `<KEEL_REPO_PATH>` with the path to your local Keel clone (or a GitHub raw URL)
 4. Paste it into your agent and let it work
 
 ---
@@ -22,17 +22,17 @@ This works with any AI coding agent — Claude Code, Cursor, GitHub Copilot, Win
 ## The Prompt
 
 ```markdown
-# Sync Coding Rules from Sentinel
+# Sync Coding Rules from Keel
 
 You are setting up AI coding rules for this project. The rules are maintained
-in a central repository (Project Sentinel) and need to be synced here in the
+in a central repository (Project Keel) and need to be synced here in the
 formats this project uses.
 
 ## Source
 
-The Sentinel rule files are located at:
+The Keel rule files are located at:
 
-    <SENTINEL_REPO_PATH>/content/rules/
+    <KEEL_REPO_PATH>/content/rules/
 
 Each rule file is Markdown with YAML frontmatter containing these fields:
 - `title` — Human-readable name (Hugo-only, do not sync)
@@ -126,7 +126,7 @@ See `.agents/rules/` for detailed coding standards. Key rules:
 - If the project has hand-written rules (e.g., a custom `CLAUDE.md` or
   `.cursorrules`), **do not overwrite** — instead, append or create new files
   alongside them
-- Never delete files that Sentinel didn't create
+- Never delete files that Keel didn't create
 
 ## Step 6: Summary
 

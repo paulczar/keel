@@ -1,6 +1,6 @@
 baseURL: https://example.org/
 languageCode: en-us
-title: Project Sentinel
+title: Project Keel
 theme: hugo-book
 
 enableGitInfo: true
@@ -11,5 +11,5 @@ taxonomies:
 params:
   BookSection: rules
   BookSearch: true
-  BookRepo: https://github.com/your-org/sentinel
+  BookRepo: https://github.com/your-org/keel
   BookEditPath: edit/main

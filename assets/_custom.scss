@@ -1,4 +1,4 @@
-.sentinel-meta {
+.keel-meta {
   margin-bottom: 1.5rem;
   border: 1px solid var(--gray-200);
   border-radius: 0.25rem;
@@ -24,7 +24,7 @@
   }
 }
 
-.sentinel-meta-label {
+.keel-meta-label {
   font-weight: 600;
   white-space: nowrap;
   width: 120px;
@@ -32,7 +32,7 @@
   color: var(--body-font-color);
 }
 
-.sentinel-glob {
+.keel-glob {
   display: inline-block;
   margin: 0.1rem 0.25rem 0.1rem 0;
   padding: 0.1rem 0.4rem;
@@ -41,7 +41,7 @@
   font-size: 0.85em;
 }
 
-.sentinel-badge {
+.keel-badge {
   display: inline-block;
   padding: 0.1rem 0.5rem;
   border-radius: 0.2rem;
@@ -49,17 +49,17 @@
   font-weight: 600;
 }
 
-.sentinel-badge-yes {
+.keel-badge-yes {
   background: #d4edda;
   color: #155724;
 }
 
-.sentinel-badge-no {
+.keel-badge-no {
   background: var(--gray-100);
   color: var(--body-font-color);
 }
 
-.sentinel-tag {
+.keel-tag {
   display: inline-block;
   margin: 0.1rem 0.25rem 0.1rem 0;
   padding: 0.1rem 0.5rem;

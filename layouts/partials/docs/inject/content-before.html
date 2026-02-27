@@ -1,32 +1,32 @@
 {{ if .Params.globs }}
-<div class="sentinel-meta">
+<div class="keel-meta">
   <table>
     <tbody>
       {{ with .Params.globs }}
       <tr>
-        <td class="sentinel-meta-label">Globs</td>
+        <td class="keel-meta-label">Globs</td>
         <td>
-          {{ range . }}<code class="sentinel-glob">{{ . }}</code> {{ end }}
+          {{ range . }}<code class="keel-glob">{{ . }}</code> {{ end }}
         </td>
       </tr>
       {{ end }}
       {{ if isset .Params "alwaysapply" }}
       <tr>
-        <td class="sentinel-meta-label">Always Apply</td>
+        <td class="keel-meta-label">Always Apply</td>
         <td>
           {{ if .Params.alwaysApply }}
-            <span class="sentinel-badge sentinel-badge-yes">Yes</span>
+            <span class="keel-badge keel-badge-yes">Yes</span>
           {{ else }}
-            <span class="sentinel-badge sentinel-badge-no">No</span>
+            <span class="keel-badge keel-badge-no">No</span>
           {{ end }}
         </td>
       </tr>
       {{ end }}
       {{ with .Params.tags }}
       <tr>
-        <td class="sentinel-meta-label">Tags</td>
+        <td class="keel-meta-label">Tags</td>
         <td>
-          {{ range . }}<a href="{{ "tags/" | absURL }}{{ . | urlize }}/" class="sentinel-tag">{{ . }}</a> {{ end }}
+          {{ range . }}<a href="{{ "tags/" | absURL }}{{ . | urlize }}/" class="keel-tag">{{ . }}</a> {{ end }}
         </td>
       </tr>
       {{ end }}
