@@ -11,18 +11,29 @@ Keel is a Hugo-powered CMS that serves as a centralized source of truth for AI c
 ```
 .
 ├── AGENTS.md                  # This file (agent instructions for this repo)
+├── Makefile                   # Build, preview, sync, and local rule targets
 ├── hugo.yaml                  # Hugo site configuration
 ├── content/
 │   ├── _index.md              # Landing page / manifesto
+│   ├── layering.md            # Rule layering documentation
 │   ├── sync-prompt.md         # Copy-pasteable sync prompt for AI agents
 │   └── rules/
 │       ├── _index.md          # Rules section index
 │       ├── base.md            # Global rules (alwaysApply: true)
+│       ├── agent-behavior.md  # Agent safety and behavioral rules
+│       ├── scaffolding.md     # Project scaffolding standards
 │       ├── typescript.md      # TypeScript/React standards
-│       ├── helm.md            # Kubernetes/Helm standards
-│       ├── yaml.md            # YAML standards
 │       ├── python.md          # Python standards
-│       └── go.md              # Go standards
+│       ├── go.md              # Go standards
+│       ├── terraform.md       # Terraform IaC standards
+│       ├── kubernetes.md      # Kubernetes manifest standards
+│       ├── helm.md            # Helm chart standards
+│       ├── yaml.md            # YAML formatting standards
+│       ├── markdown.md        # Markdown writing standards
+│       ├── hugo.md            # Hugo development standards
+│       └── mdc.md             # Cursor MDC format standards
+├── .cursor/
+│   └── rules/keel/            # Symlinks to content/rules/ for local use
 ├── layouts/
 │   └── partials/docs/inject/
 │       └── content-before.html  # AI metadata box partial
@@ -61,14 +72,36 @@ weight: 1
 - **tags** — Categories for filtering (rendered as taxonomy pages by Hugo)
 - **weight** — Sort order in the sidebar (lower = higher)
 
+## Rule Structure Conventions
+
+Every language/tool rule should follow this section pattern:
+
+1. **Tooling** — formatters, linters, type checkers, and validation tools
+2. *(Language-specific sections — style, patterns, testing, etc.)*
+3. **Agent Behavior** — when and how agents should run validation tools
+4. **.gitignore** — language-specific ignore patterns
+
+The `base.md` rule defines a **Code Validation** policy: agents should automatically run the relevant tooling after significant changes. Projects can opt out by setting `skip-auto-validation: true` in their `AGENTS.md` or a local rule.
+
+## Rule Layering
+
+Rules support three precedence layers (see `content/layering.md`):
+
+1. **Local** (`local/`) — project or team-specific. Highest precedence.
+2. **Org** (`org/`) — organizational standards.
+3. **Keel** (`keel/`) — global defaults. Lowest precedence.
+
+Higher layers fully replace lower-layer rules on the same topic. Non-conflicting rules are additive. The precedence instructions are embedded in `base.md` (which is `alwaysApply: true`).
+
 ## Common Workflows
 
 ### Adding a New Rule
 
 1. Create `content/rules/<name>.md` with the frontmatter schema above
-2. Write the rule body in Markdown
-3. Run `hugo server` to preview locally
-4. Run `hugo --gc --minify` to verify the build succeeds
+2. Write the rule body in Markdown — include Tooling and Agent Behavior sections
+3. Run `make preview` to preview locally
+4. Run `make build` to verify the build succeeds
+5. If the rule applies to this repo, add it to `CURSOR_RULES` in the Makefile and run `make rules`
 
 ### Modifying the Metadata Display
 
@@ -86,18 +119,29 @@ weight: 1
 ```
 
 Both methods generate:
-- `.agents/rules/*.md` — Full rule files (Hugo metadata stripped)
-- `.cursor/rules/*.mdc` — Cursor-compatible rule files
+- `.agents/rules/keel/*.md` — Full rule files (Hugo metadata stripped)
+- `.cursor/rules/keel/*.mdc` — Cursor-compatible rule files
 - `AGENTS.md` — Routing table with globs, descriptions, and file references
+
+Rules are placed in `keel/` subdirectories to support the layering model (see Rule Layering above).
+
+### Using Rules Locally (Dogfooding)
+
+This repo symlinks its own rules into `.cursor/rules/keel/` so Cursor picks them up. The symlinks point directly to `content/rules/` sources — content edits are reflected immediately.
+
+```bash
+# Create/recreate symlinks (only needed when adding new rules)
+make rules
+```
+
+To add a rule to the local set, add its name to `CURSOR_RULES` in the Makefile.
 
 ### Building the Site
 
 ```bash
-# Development server with live reload
-hugo server
-
-# Production build
-hugo --gc --minify
+make preview    # Development server with live reload
+make build      # Production build with minification
+make clean      # Remove generated files
 ```
 
 ## Conventions

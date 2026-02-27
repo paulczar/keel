@@ -67,21 +67,25 @@ formats to generate:
 
 | Signal | Format | Output Location |
 |--------|--------|-----------------|
-| `.cursor/` directory or `.cursorrules` exists | Cursor (MDC) | `.cursor/rules/<name>.mdc` |
-| `AGENTS.md` exists or project uses GitHub | AGENTS.md | `AGENTS.md` (root) + `.agents/rules/<name>.md` |
+| `.cursor/` directory or `.cursorrules` exists | Cursor (MDC) | `.cursor/rules/keel/<name>.mdc` |
+| `AGENTS.md` exists or project uses GitHub | AGENTS.md | `AGENTS.md` (root) + `.agents/rules/keel/<name>.md` |
 | `CLAUDE.md` exists | Claude Code | Append references to `CLAUDE.md` |
 | `.github/copilot-instructions.md` exists | Copilot | Append references to instructions file |
 | None of the above detected | Default | Ask me which formats I want |
+
+Rules are placed in a `keel/` subdirectory to support the layering model.
+The project can add `org/` and `local/` subdirectories alongside `keel/`
+to override or extend rules. See the base rule for precedence instructions.
 
 If multiple formats are detected, generate all of them.
 
 ## Step 4: Generate output
 
-### For `.agents/rules/*.md` files:
+### For `.agents/rules/keel/*.md` files:
 Copy the rule files as-is, but **strip Hugo-only frontmatter fields** (`title`,
 `tags`, `weight`). Keep `description`, `globs`, and `alwaysApply`.
 
-### For `.cursor/rules/*.mdc` files:
+### For `.cursor/rules/keel/*.mdc` files:
 Same as above — strip `title`, `tags`, `weight` from frontmatter. Change the
 file extension to `.mdc`. The body content stays identical.
 
@@ -104,7 +108,7 @@ Generate a routing table at the top:
 ### base
 - **Description:** Global coding standards
 - **Globs:** `["**/*"]`
-- **File:** `.agents/rules/base.md`
+- **File:** `.agents/rules/keel/base.md`
 ```
 
 Include a `## Rule Details` section with each rule's description, globs, and
@@ -114,9 +118,9 @@ a reference to the full file in `.agents/rules/`.
 Add a section pointing to the rule files:
 ```
 ## Coding Rules
-See `.agents/rules/` for detailed coding standards. Key rules:
-- `.agents/rules/base.md` — Global standards (always apply)
-- `.agents/rules/typescript.md` — TypeScript conventions (*.ts, *.tsx)
+See `.agents/rules/keel/` for detailed coding standards. Key rules:
+- `.agents/rules/keel/base.md` — Global standards (always apply)
+- `.agents/rules/keel/typescript.md` — TypeScript conventions (*.ts, *.tsx)
 ```
 
 ## Step 5: Handle existing rules
