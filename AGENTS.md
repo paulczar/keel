@@ -143,6 +143,10 @@ make build      # Production build with minification
 make clean      # Remove generated files
 ```
 
+### Git Commits
+
+All commits must include a `Signed-off-by` trailer from the commit author in the commit message body.
+
 ## Conventions
 
 - The theme (hugo-book v10) is pinned via git submodule. Do not update without checking Hugo version compatibility.
