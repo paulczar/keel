@@ -1,6 +1,6 @@
 HUGO := /opt/homebrew/bin/hugo
 
-.PHONY: preview build clean rules
+.PHONY: preview build clean rules test
 
 ## preview: Start local dev server with live reload
 preview:
@@ -24,6 +24,10 @@ rules:
 		ln -sf ../../../content/rules/$$rule.md .cursor/rules/keel/$$rule.mdc; \
 	done
 	@echo "Symlinked $(words $(CURSOR_RULES)) rules to .cursor/rules/keel/"
+
+## test: Run tests
+test:
+	@bash tests/test-install.sh
 
 ## help: Show available targets
 help:
