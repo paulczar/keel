@@ -11,5 +11,5 @@ taxonomies:
 params:
   BookSection: rules
   BookSearch: true
-  BookRepo: https://github.com/your-org/keel
+  BookRepo: https://github.com/paulczar/keel
   BookEditPath: edit/main

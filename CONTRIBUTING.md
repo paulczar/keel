@@ -4,7 +4,7 @@ Thanks for your interest in contributing to Project Keel. This document explains
 
 ## Reporting Bugs
 
-Open a [GitHub issue](https://github.com/your-org/keel/issues) with:
+Open a [GitHub issue](https://github.com/paulczar/keel/issues) with:
 
 - Steps to reproduce the problem
 - Expected vs actual behavior
@@ -36,7 +36,7 @@ Use `<type>/<short-description>`:
 
 ```bash
 # Clone with submodules
-git clone --recurse-submodules https://github.com/your-org/keel.git
+git clone --recurse-submodules https://github.com/paulczar/keel.git
 cd keel
 
 # Preview the site

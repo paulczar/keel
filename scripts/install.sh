@@ -6,7 +6,7 @@ set -euo pipefail
 #
 # Usage:
 #   From a Keel clone:  ./scripts/install.sh /path/to/target-project
-#   Via curl:           curl -fsSL https://raw.githubusercontent.com/your-org/keel/main/scripts/install.sh | bash -s /path/to/target-project
+#   Via curl:           curl -fsSL https://raw.githubusercontent.com/paulczar/keel/main/scripts/install.sh | bash -s /path/to/target-project
 #   In current dir:     ./scripts/install.sh .
 
 TARGET="${1:-.}"
@@ -23,7 +23,7 @@ installed=0
 if [ ! -f "$COMMAND_SOURCE" ]; then
   COMMAND_SOURCE="$(mktemp)"
   trap 'rm -f "$COMMAND_SOURCE"' EXIT
-  curl -fsSL "https://raw.githubusercontent.com/your-org/keel/main/commands/keel-sync.md" -o "$COMMAND_SOURCE"
+  curl -fsSL "https://raw.githubusercontent.com/paulczar/keel/main/commands/keel-sync.md" -o "$COMMAND_SOURCE"
 fi
 
 install_command() {

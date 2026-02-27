@@ -13,7 +13,7 @@ Keel is a Hugo-powered CMS that serves as a centralized source of truth for AI c
 
 ```bash
 # Clone with submodules (theme)
-git clone --recurse-submodules https://github.com/your-org/keel.git
+git clone --recurse-submodules https://github.com/paulczar/keel.git
 cd keel
 
 # Preview locally
