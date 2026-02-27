@@ -11,7 +11,9 @@ Keel is a Hugo-powered CMS that serves as a centralized source of truth for AI c
 ```
 .
 ├── AGENTS.md                  # This file (agent instructions for this repo)
-├── Makefile                   # Build, preview, sync, and local rule targets
+├── CLAUDE.md                  # Points Claude Code to AGENTS.md
+├── .cursorrules               # Points Cursor to AGENTS.md
+├── Makefile                   # Build, preview, and local rule targets
 ├── hugo.yaml                  # Hugo site configuration
 ├── content/
 │   ├── _index.md              # Landing page / manifesto
