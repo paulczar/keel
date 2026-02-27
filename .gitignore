@@ -1,4 +1,29 @@
+# Hugo
 public/
 resources/_gen/
 .hugo_build.lock
+
+# OS files
 .DS_Store
+Thumbs.db
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Editor history
+.history/
+
+# Secrets and environment files
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+
+# Build artifacts
+tmp/
+.cache/
