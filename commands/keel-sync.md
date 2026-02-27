@@ -1,57 +1,3 @@
----
-title: "Sync Prompt"
-weight: 50
-bookToc: true
----
-
-# Sync Prompt
-
-The primary way to distribute Keel rules is to **ask your AI coding agent to do it**. Copy the prompt below, paste it into your agent in the target project, and let it figure out which rules apply and where to put them.
-
-This works with any AI coding agent — Claude Code, Cursor, GitHub Copilot, Windsurf, Codex, or anything that accepts natural language instructions.
-
-## Slash Commands
-
-The easiest way to sync is with a slash command. Run the installer in any target project — it detects which AI tools are present and installs the `/keel-sync` command in the right places.
-
-```bash
-# From a Keel clone
-./scripts/install.sh /path/to/target-project
-
-# Or via curl (no clone needed)
-curl -fsSL https://raw.githubusercontent.com/your-org/keel/main/scripts/install.sh | bash -s /path/to/target-project
-```
-
-The installer writes the command to:
-
-| Tool | Location |
-|------|----------|
-| Claude Code | `.claude/commands/keel-sync.md` |
-| Cursor | `.cursor/commands/keel-sync.md` |
-| GitHub Copilot | `.github/prompts/keel-sync.md` |
-
-Then in the target project:
-
-```
-/keel-sync /path/to/keel/content/rules/
-```
-
-The command files are project-local and committable — your whole team gets them.
-
-## Manual Usage
-
-If you prefer not to install the slash command, copy the prompt below directly:
-
-1. Open your AI coding agent in the **target project**
-2. Copy the prompt below
-3. Replace `<KEEL_REPO_PATH>` with the path to your local Keel clone
-4. Paste it into your agent and let it work
-
----
-
-## The Prompt
-
-```markdown
 # Sync Coding Rules from Keel
 
 You are setting up AI coding rules for this project. The rules are maintained
@@ -60,9 +6,9 @@ formats this project uses.
 
 ## Source
 
-The Keel rule files are located at:
-
-    <KEEL_REPO_PATH>/content/rules/
+The Keel rule files are located at the path provided as an argument to this
+command. If no path was provided, ask the user for the path to their Keel
+repository (specifically the `content/rules/` directory).
 
 Each rule file is Markdown with YAML frontmatter containing these fields:
 - `title` — Human-readable name (Hugo-only, do not sync)
@@ -168,4 +114,3 @@ After syncing, show me:
 1. Which rules were synced and which were skipped (with reasons)
 2. Which output formats were generated
 3. A list of all files created or modified
-```

@@ -34,6 +34,10 @@ Keel is a Hugo-powered CMS that serves as a centralized source of truth for AI c
 │       ├── markdown.md        # Markdown writing standards
 │       ├── hugo.md            # Hugo development standards
 │       └── mdc.md             # Cursor MDC format standards
+├── commands/
+│   └── keel-sync.md           # Canonical /keel-sync slash command (tool-agnostic)
+├── scripts/
+│   └── install.sh             # Installs slash commands into target projects
 ├── .cursor/
 │   └── rules/keel/            # Symlinks to content/rules/ for local use
 ├── layouts/

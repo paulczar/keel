@@ -31,10 +31,15 @@ Run `make preview` and open the local site to browse all rules with search, tagg
 
 ### Syncing Rules to a Project
 
-1. Open your AI coding agent in the **target project**
-2. Copy the sync prompt from the [Sync Prompt](/sync-prompt) page
-3. Replace `<KEEL_REPO_PATH>` with the path to your Keel clone
-4. Paste it into your agent — it inspects the project, selects relevant rules, and generates the right output formats
+Install the `/keel-sync` slash command into a target project:
+
+```bash
+./scripts/install.sh /path/to/target-project
+```
+
+Then in the target project, run `/keel-sync /path/to/keel/content/rules/` in Claude Code, Cursor, or Copilot. The agent inspects the project, selects relevant rules, and generates the right output formats.
+
+See the [Sync Prompt](/sync-prompt) page for manual usage and details.
 
 ### Adding a New Rule
 
