@@ -120,10 +120,10 @@ for file in "$RULES_DIR"/*.md; do
     description=$(awk '/^---$/{c++; next} c==1 && /^description:/{gsub(/^description: *"?/, ""); gsub(/"$/, ""); print; exit}' "$file")
     globs=$(awk '/^---$/{c++; next} c==1 && /^globs:/{gsub(/^globs: */, ""); print; exit}' "$file")
 
-    printf '### %s\n\n' "$rule_name" >> "$AGENTS_FILE"
-    printf '- **Description:** %s\n' "${description:-No description}" >> "$AGENTS_FILE"
-    printf '- **Globs:** `%s`\n' "${globs:----}" >> "$AGENTS_FILE"
-    printf '- **File:** `.agents/rules/%s`\n\n' "$basename" >> "$AGENTS_FILE"
+    printf -- '### %s\n\n' "$rule_name" >> "$AGENTS_FILE"
+    printf -- '- **Description:** %s\n' "${description:-No description}" >> "$AGENTS_FILE"
+    printf -- '- **Globs:** `%s`\n' "${globs:-N/A}" >> "$AGENTS_FILE"
+    printf -- '- **File:** `.agents/rules/%s`\n\n' "$basename" >> "$AGENTS_FILE"
 done
 
 echo ""

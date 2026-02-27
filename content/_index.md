@@ -66,7 +66,7 @@ Base rules apply globally (`alwaysApply: true`). Language-specific and framework
 
 ### Tool-Agnostic
 
-One source of truth, multiple outputs. The sync script generates AGENTS.md, `.cursor/rules/`, and `.agents/rules/` from the same content.
+One source of truth, multiple outputs. Your AI agent reads the rules and generates AGENTS.md, `.cursor/rules/`, and `.agents/rules/` — adapting to each project's actual stack.
 
 <--->
 
@@ -80,11 +80,13 @@ A centralized CMS with sync tooling enforces organizational standards. Teams sha
 
 1. **Author rules** in `content/rules/` using Markdown with YAML frontmatter (title, description, globs, alwaysApply, tags)
 2. **Preview** the documentation site locally with `hugo server`
-3. **Sync** rules to any project with `./scripts/sync-rules.sh /path/to/target`
-   - Copies `.md` files to `.agents/rules/`
-   - Converts to `.mdc` files in `.cursor/rules/`
-   - Auto-generates `AGENTS.md` in the project root
+3. **Sync** rules to any project using the [Sync Prompt]({{< relref "/sync-prompt" >}})
+   - Open your AI coding agent in the target project
+   - Paste the sync prompt — it tells the agent to inspect your project, select relevant rules, and generate the right output formats
+   - The agent adapts: it only syncs rules that match your stack and writes to the formats your project actually uses
 4. **Commit & deploy** — the target repo now has AI-agent-ready rules in all formats
+
+> **Why a prompt instead of a script?** Your AI agent can inspect the target project, skip irrelevant rules, detect which output formats are needed, and handle conflicts intelligently. A bash script can't. For CI/CD pipelines where you need deterministic output, a [bash script]({{< relref "/sync-prompt#for-cicd-pipelines" >}}) is also available.
 
 ### Rule Format
 

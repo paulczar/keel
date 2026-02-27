@@ -14,6 +14,7 @@ Sentinel is a Hugo-powered CMS that serves as a centralized source of truth for 
 ├── hugo.yaml                  # Hugo site configuration
 ├── content/
 │   ├── _index.md              # Landing page / manifesto
+│   ├── sync-prompt.md         # Copy-pasteable sync prompt for AI agents
 │   └── rules/
 │       ├── _index.md          # Rules section index
 │       ├── base.md            # Global rules (alwaysApply: true)
@@ -55,7 +56,7 @@ weight: 1
 
 - **title** — Display title for the Hugo site sidebar and page heading
 - **description** — Brief explanation of when/why this rule applies
-- **globs** — File patterns that activate this rule (AGENTS.md scope). MUST use single-line flow-sequence format (`[...]`) for sync script compatibility
+- **globs** — File patterns that activate this rule (AGENTS.md scope). Use single-line flow-sequence format (`[...]`) for consistency
 - **alwaysApply** — `true` for rules that apply globally; `false` for context-specific rules
 - **tags** — Categories for filtering (rendered as taxonomy pages by Hugo)
 - **weight** — Sort order in the sidebar (lower = higher)
@@ -77,13 +78,16 @@ weight: 1
 
 ### Syncing Rules to a Target Repo
 
+**Primary method (interactive):** Use the sync prompt at `content/sync-prompt.md`. The user copies the prompt into their AI coding agent in the target project. The agent inspects the project, selects relevant rules, and generates the appropriate output formats.
+
+**CI/CD fallback (deterministic):** Use the bash script for pipelines:
 ```bash
 ./scripts/sync-rules.sh /path/to/target-repo
 ```
 
-This generates:
-- `.agents/rules/*.md` — Full rule files
-- `.cursor/rules/*.mdc` — Cursor-compatible (Hugo metadata stripped)
+Both methods generate:
+- `.agents/rules/*.md` — Full rule files (Hugo metadata stripped)
+- `.cursor/rules/*.mdc` — Cursor-compatible rule files
 - `AGENTS.md` — Routing table with globs, descriptions, and file references
 
 ### Building the Site
@@ -100,5 +104,6 @@ hugo --gc --minify
 
 - The theme (hugo-book v10) is pinned via git submodule. Do not update without checking Hugo version compatibility.
 - Hugo 0.129.0 is the target version. hugo-book v11+ requires Hugo 0.134+.
-- `globs` in frontmatter MUST always use single-line flow-sequence format (`["pattern"]`) for reliable awk parsing in the sync script.
+- `globs` in frontmatter should use single-line flow-sequence format (`["pattern"]`) for consistency.
 - The `content/_index.md` serves as both the site landing page and the project manifesto. It uses hugo-book's `columns` shortcode.
+- The `content/sync-prompt.md` contains the copy-pasteable prompt for AI-agent-driven rule syncing. This is the primary distribution mechanism.
