@@ -89,6 +89,13 @@ securityContext:
 - Mount config as volumes rather than environment variables when files are expected
 - Use `immutable: true` on ConfigMaps and Secrets that should not change after creation
 
+## Tooling
+
+- Validate manifests against schemas with `kubeconform` (or `kubeval`)
+- Lint manifests with `kube-linter` for best-practice violations
+- Use `kubectl diff` to preview changes before applying
+- Use `kubectl --dry-run=client -o yaml` to validate generated manifests without applying
+
 ## Agent Behavior
 
 Behavioral guidance for AI agents managing Kubernetes resources, whether via `kubectl`, MCP tools, or client libraries.
@@ -100,3 +107,4 @@ Behavioral guidance for AI agents managing Kubernetes resources, whether via `ku
 - Prefer declarative apply over imperative create/replace (e.g., `kubectl apply` over `kubectl create`)
 - Confirm resource state after mutations — read back the resource to verify the change took effect (e.g., `kubectl get`)
 - When deleting, retrieve and display the resource details first (e.g., `kubectl get <resource>`), then ask for user confirmation before executing
+- After modifying manifests, run `kubeconform` (if available) to validate schema correctness before applying

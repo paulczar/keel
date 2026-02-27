@@ -11,6 +11,11 @@ weight: 40
 
 Standards for YAML file formatting and structure.
 
+## Tooling
+
+- Lint with `yamllint` using a project-level `.yamllint.yml` config
+- For Kubernetes YAML, validate schemas with `kubeconform` or `kubeval`
+
 ## Formatting
 
 - Use 2-space indentation — never tabs
@@ -67,3 +72,8 @@ metadata:
 - Name anchors descriptively: `&default-resources` not `&x`
 - Place anchor definitions before their first use
 - Avoid complex merge keys (`<<:`) — prefer explicit repetition if clarity suffers
+
+## Agent Behavior
+
+- After modifying YAML files, run `yamllint` (if available) to catch syntax and formatting issues
+- For Kubernetes manifests, validate against schemas with `kubeconform` before applying

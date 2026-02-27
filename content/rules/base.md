@@ -78,3 +78,18 @@ or keel version — do not merge them.
 
 Rules that do not conflict are additive — follow all of them regardless
 of layer.
+
+## Code Validation
+
+After making significant changes to code, validate your work by running
+the project's formatting, linting, and type-checking tools. Each language
+rule lists the specific tools to use.
+
+- Run formatters first (e.g., `gofmt`, `black`, `terraform fmt`)
+- Run linters and static analysis (e.g., `golangci-lint`, `ruff`, `eslint`)
+- Run type checkers or syntax validation (e.g., `tsc --noEmit`, `terraform validate`)
+- Fix any issues before presenting the result to the user
+
+If the project's `AGENTS.md` or a local rule contains
+`skip-auto-validation: true`, skip automatic validation and only run
+these tools when the user explicitly asks.

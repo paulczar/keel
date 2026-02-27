@@ -11,6 +11,13 @@ weight: 25
 
 Standards for Go development.
 
+## Tooling
+
+- Format with `gofmt` (or `goimports`) — no exceptions
+- Lint with `golangci-lint` using a project-level `.golangci.yml` config
+- Vet with `go vet ./...` for correctness issues the compiler won't catch
+- Run tests with `go test ./...`
+
 ## Style
 
 - Follow `gofmt` and `goimports` formatting — no exceptions
@@ -101,6 +108,12 @@ func TestGetUser_NotFound(t *testing.T) {
   - `api/` — API definitions (protobuf, OpenAPI)
 - Use `internal/` to prevent external packages from importing implementation details
 - Keep `main.go` thin — parse config, wire dependencies, start the server
+
+## Agent Behavior
+
+- After modifying `.go` files, run `gofmt`, `go vet ./...`, and `golangci-lint run` to verify correctness
+- Fix all lint and vet findings before presenting changes
+- Run `go build ./...` to confirm the project compiles after changes
 
 ## .gitignore
 

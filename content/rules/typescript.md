@@ -11,6 +11,13 @@ weight: 10
 
 Standards for TypeScript and React development.
 
+## Tooling
+
+- Format with Prettier (or Biome) — enforce via config, no manual style debates
+- Lint with ESLint using a shared config (e.g., `@typescript-eslint/recommended`)
+- Type-check with `tsc --noEmit` — the project must compile cleanly with zero type errors
+- Use `npm run lint` / `npm run typecheck` (or equivalent) as standard script names
+
 ## Type Safety
 
 - Enable `strict` mode in `tsconfig.json` — never disable it
@@ -78,6 +85,12 @@ export function UserCard({ user, onSelect }: UserCardProps) {
 - Test behavior, not implementation — query by role, label, or text
 - Mock external dependencies at module boundaries, not internal functions
 - Use `userEvent` over `fireEvent` for realistic user interaction simulation
+
+## Agent Behavior
+
+- After modifying `.ts`/`.tsx` files, run the project's lint and type-check commands to verify correctness
+- Fix any lint errors or type errors before presenting changes — do not leave `any` casts as workarounds
+- When adding dependencies, verify they include type declarations (`@types/` package or bundled types)
 
 ## .gitignore
 

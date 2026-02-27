@@ -11,6 +11,14 @@ weight: 20
 
 Standards for Python development.
 
+## Tooling
+
+- Format with Ruff (or Black) — run `ruff format` to enforce consistent style
+- Lint with Ruff (or Flake8): `ruff check --fix`
+- Sort imports with Ruff's isort rules (or standalone `isort`)
+- Type-check with `mypy --strict` (or `pyright`) — aim for zero type errors on new code
+- Run `pytest` for tests
+
 ## Style
 
 - Follow PEP 8 for formatting — use a formatter (Black or Ruff) to enforce it
@@ -78,6 +86,12 @@ def get_user(user_id: str, *, include_inactive: bool = False) -> User | None:
 - Pin direct dependencies; use ranges for library dependencies
 - Include a `py.typed` marker for typed packages
 - Use virtual environments — never install packages globally
+
+## Agent Behavior
+
+- After modifying `.py` files, run the project's formatter, linter, and type checker to verify correctness
+- Fix all lint and type errors before presenting changes
+- When creating new modules, include type hints on all public function signatures
 
 ## .gitignore
 
