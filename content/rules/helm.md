@@ -1,15 +1,15 @@
 ---
-title: "Helm & Kubernetes Standards"
-description: "Kubernetes manifest and Helm chart conventions"
+title: "Helm Standards"
+description: "Helm chart development conventions"
 globs: ["**/Chart.yaml", "**/values.yaml", "**/templates/**/*.yaml", "**/templates/**/*.tpl", "**/*.helm.yaml"]
 alwaysApply: false
-tags: ["kubernetes", "helm", "infrastructure"]
+tags: ["helm", "infrastructure"]
 weight: 30
 ---
 
-# Helm & Kubernetes Standards
+# Helm Standards
 
-Standards for Kubernetes manifests and Helm chart development.
+Standards for Helm chart development.
 
 ## Chart Structure
 
@@ -54,35 +54,17 @@ image:
 ## Templates
 
 - Use `_helpers.tpl` for reusable template definitions (labels, names, selectors)
-- Always include standard labels: `app.kubernetes.io/name`, `app.kubernetes.io/instance`, `app.kubernetes.io/version`, `app.kubernetes.io/managed-by`
 - Quote all string values in YAML templates: `{{ .Values.image.repository | quote }}`
 - Use `{{- ... -}}` trim markers to control whitespace
 - Gate optional resources with `{{- if .Values.feature.enabled }}`
+- Use `{{ include "chart.labels" . }}` over `{{ template }}` for pipeline compatibility
 
-## Resource Management
+## Dependencies
 
-- Always define resource requests and limits for containers
-- Set `requests` to typical usage; set `limits` to peak expected usage
-- Use `LimitRange` and `ResourceQuota` in shared namespaces
-- Configure health checks (`livenessProbe`, `readinessProbe`, `startupProbe`) for all containers
-
-## Security
-
-- Never run containers as root — set `runAsNonRoot: true` in `securityContext`
-- Drop all capabilities and add back only what's needed
-- Set `readOnlyRootFilesystem: true` where possible
-- Use `NetworkPolicy` to restrict pod-to-pod communication
-- Store secrets in external secret managers (Vault, AWS Secrets Manager) — never in `values.yaml`
-
-```yaml
-securityContext:
-  runAsNonRoot: true
-  runAsUser: 1000
-  allowPrivilegeEscalation: false
-  capabilities:
-    drop: ["ALL"]
-  readOnlyRootFilesystem: true
-```
+- Declare subchart dependencies in `Chart.yaml` under `dependencies`
+- Pin dependency versions to a specific range — avoid `*`
+- Run `helm dependency update` after changing dependencies
+- Override subchart values under the subchart's key in `values.yaml`
 
 ## Testing
 
@@ -100,3 +82,14 @@ charts/*.tgz
 ```
 
 Also ensure each chart has a `.helmignore` file to exclude unnecessary files from the packaged chart (e.g., `.git/`, `*.md`, `.gitignore`).
+
+## Agent Behavior
+
+Behavioral guidance for AI agents managing Helm releases, whether via `helm` CLI, MCP tools, or client libraries.
+
+- Review existing releases in the target namespace before installing or upgrading (e.g., `helm list --namespace <ns>`)
+- Preview changes before applying — use diff or dry-run capabilities (e.g., `helm diff upgrade`, `helm upgrade --dry-run`) to show what will change
+- Always scope operations to an explicit namespace (e.g., `--namespace <ns>`)
+- Never uninstall a release without showing its current status (e.g., `helm status <release>`) and confirming with the user
+- Review release status and history to understand current state before making changes (e.g., `helm status`, `helm history`)
+- Prefer upgrade-or-install (idempotent) operations over separate install/upgrade for resilience (e.g., `helm upgrade --install`)
