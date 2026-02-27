@@ -6,9 +6,13 @@ formats this project uses.
 
 ## Source
 
-The Keel rule files are located at the path provided as an argument to this
-command. If no path was provided, ask the user for the path to their Keel
-repository (specifically the `content/rules/` directory).
+The Keel rule files can come from either:
+1. **A local path** provided as an argument (the `content/rules/` directory)
+2. **The GitHub repository** at `https://github.com/paulczar/keel`
+
+If no argument was provided, default to fetching from the GitHub repo. Use the
+GitHub API or raw content URLs to read files directly — no local clone needed.
+For example: `https://raw.githubusercontent.com/paulczar/keel/main/content/rules/`
 
 Each rule file is Markdown with YAML frontmatter containing these fields:
 - `title` — Human-readable name (Hugo-only, do not sync)
@@ -28,13 +32,20 @@ Look at the project structure — check for files like `package.json`, `go.mod`,
 
 ## Step 2: Select relevant rules
 
-Read all rule files from the source. Select rules that are relevant:
+List all rule files from the source, but **only read the YAML frontmatter**
+(the content between the opening `---` and closing `---`) of each file. Do NOT
+read the full file body at this stage — frontmatter alone contains `alwaysApply`,
+`globs`, and `description`, which is all you need to determine relevance.
+
+Select rules that are relevant:
 - **Always include** rules where `alwaysApply: true` (e.g., `base.md`)
 - **Include** language/framework rules whose `globs` match files that exist
   in this project (e.g., include `typescript.md` if there are `.ts` files)
 - **Skip** rules for languages/frameworks not present in this project
 
 Tell me which rules you selected and why before proceeding.
+
+Only read the full body of selected rules in Step 4 when generating output.
 
 ## Step 3: Detect output formats
 

@@ -33,6 +33,12 @@ The installer writes the command to:
 Then in the target project:
 
 ```
+/keel-sync
+```
+
+It defaults to fetching rules from the GitHub repo. You can also pass a local path:
+
+```
 /keel-sync /path/to/keel/content/rules/
 ```
 
@@ -44,7 +50,7 @@ If you prefer not to install the slash command, copy the prompt below directly:
 
 1. Open your AI coding agent in the **target project**
 2. Copy the prompt below
-3. Replace `<KEEL_REPO_PATH>` with the path to your local Keel clone
+3. Optionally replace the GitHub URL with a local path if you have a Keel clone
 4. Paste it into your agent and let it work
 
 ---
@@ -60,9 +66,14 @@ formats this project uses.
 
 ## Source
 
-The Keel rule files are located at:
+The Keel rule files can come from either:
+1. **The GitHub repository** (default): `https://github.com/paulczar/keel`
+   Use raw content URLs like:
+   `https://raw.githubusercontent.com/paulczar/keel/main/content/rules/`
+2. **A local path** if you have a clone: `/path/to/keel/content/rules/`
 
-    <KEEL_REPO_PATH>/content/rules/
+If a path or URL was provided as an argument, use that. Otherwise default to
+fetching from the GitHub repository — no local clone needed.
 
 Each rule file is Markdown with YAML frontmatter containing these fields:
 - `title` — Human-readable name (Hugo-only, do not sync)
@@ -82,13 +93,20 @@ Look at the project structure — check for files like `package.json`, `go.mod`,
 
 ## Step 2: Select relevant rules
 
-Read all rule files from the source. Select rules that are relevant:
+List all rule files from the source, but **only read the YAML frontmatter**
+(the content between the opening `---` and closing `---`) of each file. Do NOT
+read the full file body at this stage — frontmatter alone contains `alwaysApply`,
+`globs`, and `description`, which is all you need to determine relevance.
+
+Select rules that are relevant:
 - **Always include** rules where `alwaysApply: true` (e.g., `base.md`)
 - **Include** language/framework rules whose `globs` match files that exist
   in this project (e.g., include `typescript.md` if there are `.ts` files)
 - **Skip** rules for languages/frameworks not present in this project
 
 Tell me which rules you selected and why before proceeding.
+
+Only read the full body of selected rules in Step 4 when generating output.
 
 ## Step 3: Detect output formats
 
