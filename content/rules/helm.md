@@ -90,3 +90,13 @@ securityContext:
 - Use `helm lint` in CI to catch template errors
 - Validate rendered manifests with `helm template` + `kubeconform` or `kubeval`
 - Test upgrades: ensure `helm upgrade --install` works cleanly from the previous version
+
+## .gitignore
+
+Ensure these Helm-specific patterns are in the project's `.gitignore`:
+
+```gitignore
+charts/*.tgz
+```
+
+Also ensure each chart has a `.helmignore` file to exclude unnecessary files from the packaged chart (e.g., `.git/`, `*.md`, `.gitignore`).

@@ -78,3 +78,19 @@ def get_user(user_id: str, *, include_inactive: bool = False) -> User | None:
 - Pin direct dependencies; use ranges for library dependencies
 - Include a `py.typed` marker for typed packages
 - Use virtual environments — never install packages globally
+
+## .gitignore
+
+Ensure these Python-specific patterns are in the project's `.gitignore`:
+
+```gitignore
+__pycache__/
+*.pyc
+.venv/
+venv/
+.tox/
+*.egg-info/
+dist/
+build/
+.mypy_cache/
+```

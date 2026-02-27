@@ -78,3 +78,16 @@ export function UserCard({ user, onSelect }: UserCardProps) {
 - Test behavior, not implementation — query by role, label, or text
 - Mock external dependencies at module boundaries, not internal functions
 - Use `userEvent` over `fireEvent` for realistic user interaction simulation
+
+## .gitignore
+
+Ensure these TypeScript/JavaScript-specific patterns are in the project's `.gitignore`:
+
+```gitignore
+node_modules/
+dist/
+build/
+.next/
+coverage/
+*.tsbuildinfo
+```

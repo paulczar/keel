@@ -101,3 +101,14 @@ func TestGetUser_NotFound(t *testing.T) {
   - `api/` — API definitions (protobuf, OpenAPI)
 - Use `internal/` to prevent external packages from importing implementation details
 - Keep `main.go` thin — parse config, wire dependencies, start the server
+
+## .gitignore
+
+Ensure these Go-specific patterns are in the project's `.gitignore`:
+
+```gitignore
+/bin/
+/vendor/
+*.test
+coverage.out
+```
