@@ -44,5 +44,6 @@ Run the command and capture the output.
 Show the user the script output. Summarize:
 - Which rules were selected and which were skipped
 - Which output formats were generated
+- That slash commands (keel-sync, keel-apply, etc.) were installed to `.cursor/commands/`, `.claude/commands/`, `.github/prompts/`
 - How many files were written
 - Any errors encountered

@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """
-keel-sync — Sync coding rules from Project Keel into local AI tooling formats.
+keel-sync — Sync coding rules and slash commands from Project Keel.
 
 Reads Markdown rule files with YAML frontmatter from a Keel repository and
-generates output for Cursor (.mdc), AGENTS.md, and CLAUDE.md.
+generates output for Cursor (.mdc), AGENTS.md, and CLAUDE.md. Also installs
+slash commands (e.g. keel-sync.md, keel-apply.md) into .cursor/commands/,
+.claude/commands/, and .github/prompts/.
 
 Source resolution order:
   1. --path argument
@@ -154,6 +156,16 @@ def _find_rules(src: Path) -> Path:
     sys.exit(1)
 
 
+def _keel_root(rules_dir: Path) -> Path:
+    """Return Keel repo root. rules_dir is content/rules or a dir with base.md."""
+    # content/rules structure: repo/content/rules -> repo
+    candidate = (rules_dir.parent.parent / "commands").resolve()
+    if candidate.exists():
+        return rules_dir.parent.parent.resolve()
+    # Flat structure: rules_dir has base.md, commands beside parent
+    return rules_dir.parent.resolve()
+
+
 def _shallow_clone(repo_url: str) -> Path:
     tmp = Path(tempfile.mkdtemp(prefix="keel-"))
     atexit.register(shutil.rmtree, tmp, True)
@@ -275,6 +287,24 @@ def detect_formats(project: Path) -> list[str]:
     if not fmts:
         fmts = ["agents", "cursor", "claude"]
     return fmts
+
+
+def detect_command_targets(project: Path) -> list[tuple[str, Path]]:
+    """Return [(subdir, path), ...] for command installation. E.g. ('.cursor/commands', path)."""
+    targets = []
+    if (project / ".cursor").exists() or (project / ".cursorrules").exists():
+        targets.append((".cursor/commands", project / ".cursor" / "commands"))
+    if (project / ".claude").exists():
+        targets.append((".claude/commands", project / ".claude" / "commands"))
+    if (project / ".github").exists():
+        targets.append((".github/prompts", project / ".github" / "prompts"))
+    if not targets:
+        targets = [
+            (".cursor/commands", project / ".cursor" / "commands"),
+            (".claude/commands", project / ".claude" / "commands"),
+            (".github/prompts", project / ".github" / "prompts"),
+        ]
+    return targets
 
 
 # ---------------------------------------------------------------------------
@@ -451,6 +481,39 @@ def sync_claude_md(rules: list[dict], project: Path, **kw) -> list[str]:
 
 
 # ---------------------------------------------------------------------------
+# Slash command installation
+# ---------------------------------------------------------------------------
+
+def sync_commands(
+    keel_root: Path, project: Path, targets: list[tuple[str, Path]] | None = None, **kw
+) -> list[str]:
+    """Copy slash commands from Keel commands/ to project AI tool dirs."""
+    commands_dir = keel_root / "commands"
+    if not commands_dir.exists():
+        return []
+
+    command_files = sorted(
+        f.name for f in commands_dir.iterdir()
+        if f.is_file() and f.suffix == ".md"
+    )
+    if not command_files:
+        return []
+
+    if targets is None:
+        targets = detect_command_targets(project)
+    written: list[str] = []
+    for subdir, dest_dir in targets:
+        dest_dir.mkdir(parents=True, exist_ok=True)
+        for name in command_files:
+            src = commands_dir / name
+            content = src.read_text()
+            dest = dest_dir / name
+            if write_if_changed(dest, content, **kw):
+                written.append(str(dest))
+    return written
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -498,30 +561,44 @@ def main():
             print(f"  - {r['name']:<20s} {r['reason']}")
 
     if not selected:
-        print("\nNo relevant rules found.")
-        return
+        print("\nNo relevant rules found (commands will still be synced).")
 
-    # 3. Detect formats
+    # 3. Detect formats and command targets (before any writes)
     if args.formats:
         formats = [f.strip() for f in args.formats.split(",")]
     else:
         formats = detect_formats(project)
+    command_targets = detect_command_targets(project)
     print(f"\nFormats: {', '.join(formats)}\n")
 
     # 4. Sync
     kw = {"force": args.force, "dry_run": args.dry_run}
     written: list[str] = []
 
-    if "agents" in formats or "claude" in formats:
-        written += sync_agents_rules(selected, project, **kw)
-    if "agents" in formats:
-        written += sync_agents_md(selected, project, **kw)
-    if "claude" in formats:
-        written += sync_claude_md(selected, project, **kw)
-    if "cursor" in formats:
-        written += sync_cursor_rules(selected, project, **kw)
+    if selected:
+        if "agents" in formats or "claude" in formats:
+            written += sync_agents_rules(selected, project, **kw)
+        if "agents" in formats:
+            written += sync_agents_md(selected, project, **kw)
+        if "claude" in formats:
+            written += sync_claude_md(selected, project, **kw)
+        if "cursor" in formats:
+            written += sync_cursor_rules(selected, project, **kw)
 
-    # 5. Summary
+    # 5. Sync slash commands (from Keel commands/ to .cursor/commands, etc.)
+    keel_root = _keel_root(rules_dir)
+    cmd_written = sync_commands(keel_root, project, targets=command_targets, **kw)
+    if cmd_written:
+        written += cmd_written
+    elif (keel_root / "commands").exists():
+        cmd_files = sorted(
+            f.name for f in (keel_root / "commands").iterdir()
+            if f.is_file() and f.suffix == ".md"
+        )
+        if cmd_files:
+            print(f"\nCommands already up to date: {', '.join(cmd_files)}")
+
+    # 6. Summary
     verb = "would write" if args.dry_run else "wrote"
     print(f"\nDone — {verb} {len(written)} file(s).")
 

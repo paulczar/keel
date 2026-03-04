@@ -50,28 +50,32 @@ The script auto-detects output formats (Cursor, AGENTS.md, CLAUDE.md) based on w
 
 ## Slash Commands
 
-The installer adds two slash commands:
+`keel-sync.py` installs slash commands automatically when you sync rules. No separate install step needed.
 
 - **`/keel-sync`** — Syncs coding rules from Keel. Delegates to `keel-sync.py`; the LLM locates or downloads the script, runs it, and reports the results.
 - **`/keel-apply`** — Audits the project against Keel best practices (`.gitignore`, `LICENSE`, `CONTRIBUTING.md`, etc.) and guides you through adding missing scaffolding. Never creates files automatically — it asks first and resolves ambiguity (e.g., which license).
 
-### Install
+### Install (via keel-sync.py)
+
+Run `keel-sync.py` — it syncs both rules and slash commands in one go:
 
 ```bash
-# From a Keel clone
-./scripts/install.sh /path/to/target-project
+# No install needed — run directly with curl
+curl -fsSL https://raw.githubusercontent.com/paulczar/keel/main/scripts/keel-sync.py | python3 - --clone https://github.com/paulczar/keel --project /path/to/target
 
-# Or via curl (no clone needed)
-curl -fsSL https://raw.githubusercontent.com/paulczar/keel/main/scripts/install.sh | bash -s /path/to/target-project
+# Or from a local Keel clone
+python3 scripts/keel-sync.py --path content/rules --project /path/to/target
 ```
 
-The installer detects which AI tools are present and writes both commands to:
+The script writes commands to:
 
 | Tool | Location |
 |------|----------|
-| Claude Code | `.claude/commands/keel-sync.md`, `keel-apply.md` |
-| Cursor | `.cursor/commands/keel-sync.md`, `keel-apply.md` |
-| GitHub Copilot | `.github/prompts/keel-sync.md`, `keel-apply.md` |
+| Claude Code | `.claude/commands/keel-sync.md`, `keel-apply.md`, etc. |
+| Cursor | `.cursor/commands/keel-sync.md`, `keel-apply.md`, etc. |
+| GitHub Copilot | `.github/prompts/keel-sync.md`, `keel-apply.md`, etc. |
+
+**Note:** `install.sh` is deprecated; use `keel-sync.py` instead.
 
 ### Run
 

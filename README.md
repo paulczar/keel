@@ -44,15 +44,9 @@ python3 scripts/keel-sync.py --path content/rules --project /path/to/target
 python3 scripts/keel-sync.py --clone https://github.com/paulczar/keel --dry-run
 ```
 
-The script auto-detects languages, AI tooling formats, and writes matching rules.
+The script auto-detects languages, AI tooling formats, writes matching rules, and installs slash commands (keel-sync, keel-apply, etc.) into `.cursor/commands/`, `.claude/commands/`, and `.github/prompts/`.
 
-Alternatively, install the `/keel-sync` slash command for AI-assisted sync (it runs the script under the hood):
-
-```bash
-./scripts/install.sh /path/to/target-project
-```
-
-Then run `/keel-sync` in Claude Code, Cursor, or Copilot.
+To use slash commands (e.g. `/keel-sync`, `/keel-apply`) in Claude Code, Cursor, or Copilot, run `keel-sync.py` once — it installs them. No separate install step.
 
 See the [Sync Prompt](/sync-prompt) page for full details and options.
 

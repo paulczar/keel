@@ -20,17 +20,17 @@ make test
 ```
 
 This creates a temp directory with a Go fixture project, runs `install.sh`
-against it under five scenarios, and verifies the right files land in the right
-places. All tests run with a restricted `PATH` so results are deterministic
-regardless of which AI CLIs you have installed.
+(which delegates to `keel-sync.py`) under five scenarios, and verifies the
+right files land in the right places. All tests run with a restricted `PATH`
+so results are deterministic regardless of which AI CLIs you have installed.
 
 | Test | Setup | Expected result |
 |------|-------|-----------------|
-| No AI dirs | bare project | installs to all three destinations (fallback) |
-| `.cursor/` exists | `mkdir .cursor` | only `.cursor/commands/keel-sync.md` |
-| `.claude/` exists | `mkdir .claude` | only `.claude/commands/keel-sync.md` |
-| `.github/` exists | `mkdir .github` | only `.github/prompts/keel-sync.md` |
-| `.cursorrules` file | `touch .cursorrules` | only `.cursor/commands/keel-sync.md` |
+| No AI dirs | bare project | installs rules and commands to all three destinations (fallback) |
+| `.cursor/` exists | `mkdir .cursor` | only `.cursor/commands/*.md` and rules |
+| `.claude/` exists | `mkdir .claude` | only `.claude/commands/*.md` and rules |
+| `.github/` exists | `mkdir .github` | only `.github/prompts/*.md` and rules |
+| `.cursorrules` file | `touch .cursorrules` | only `.cursor/commands/*.md` and rules |
 
 ## 2. keel-sync.py Tests
 
@@ -97,30 +97,29 @@ rm -rf /tmp/keel-curl-test
 
 ## 3. Manual Install Test
 
-Test the install script against a real project on your machine:
+**Note:** `install.sh` is deprecated and delegates to `keel-sync.py`. Prefer running `keel-sync.py` directly.
+
+Test keel-sync against a real project on your machine:
 
 ```bash
 # pick any git repo you have locally
 cd /path/to/some-project
 
-# run install from the Keel repo
-/path/to/keel/scripts/install.sh .
+# run keel-sync from the Keel repo (syncs rules and commands)
+python3 /path/to/keel/scripts/keel-sync.py --path /path/to/keel --project .
 ```
 
 Verify:
-- [ ] Output says "Installing keel-sync command in: ..."
-- [ ] Correct destinations were detected (check which AI dirs exist)
-- [ ] The installed file content matches `commands/keel-sync.md`
+- [ ] Output shows rules selected and formats detected
+- [ ] Commands installed to `.cursor/commands/`, `.claude/commands/`, or `.github/prompts/` as appropriate
+- [ ] The installed command files match `commands/keel-sync.md` and `commands/keel-apply.md`
 
-Then test the curl-based install (simulates a user who hasn't cloned Keel):
+Or use the deprecated install.sh (backward compatibility):
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/paulczar/keel/main/scripts/install.sh | bash -s /path/to/some-project
+/path/to/keel/scripts/install.sh .
+# Prints deprecation notice, then runs keel-sync.py
 ```
-
-Verify:
-- [ ] Script downloads `keel-sync.md` from GitHub and installs it
-- [ ] Same detection logic applies
 
 ## 4. Testing `/keel-sync` with Claude Code
 
