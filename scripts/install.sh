@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Keel slash command installer
-# Installs the /keel-sync command into AI tool directories in the current project.
+# Installs all commands from commands/ into AI tool directories in the current project.
 #
 # Usage:
 #   From a Keel clone:  ./scripts/install.sh /path/to/target-project
@@ -15,62 +15,96 @@ TARGET="$(cd "$TARGET" && pwd)"
 # Resolve the Keel repo root (relative to this script when run locally)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 KEEL_ROOT="$(cd "$SCRIPT_DIR/.." && pwd 2>/dev/null || echo "")"
-COMMAND_SOURCE="${KEEL_ROOT}/commands/keel-sync.md"
+
+# Discover commands to install: all *.md in commands/ (local) or from GitHub API (curl case)
+COMMANDS=()
+if [ -d "${KEEL_ROOT}/commands" ]; then
+  for f in "${KEEL_ROOT}"/commands/*.md; do
+    [ -f "$f" ] && COMMANDS+=( "$(basename "$f")" )
+  done
+fi
+if [ ${#COMMANDS[@]} -eq 0 ]; then
+  while IFS= read -r name; do
+    [ -n "$name" ] && COMMANDS+=( "$name" )
+  done < <(curl -sL "https://api.github.com/repos/paulczar/keel/contents/commands" 2>/dev/null | grep -oE '"name"[[:space:]]*:[[:space:]]*"[^"]+\.md"' | sed 's/.*"\([^"]*\)"/\1/')
+fi
 
 installed=0
 
-# If we can't find the source command (curl case), embed it
-if [ ! -f "$COMMAND_SOURCE" ]; then
-  COMMAND_SOURCE="$(mktemp)"
-  trap 'rm -f "$COMMAND_SOURCE"' EXIT
-  curl -fsSL "https://raw.githubusercontent.com/paulczar/keel/main/commands/keel-sync.md" -o "$COMMAND_SOURCE"
-fi
+# When using curl, we download to a temp dir; clean up on exit
+TEMP_DIR=""
+trap 'rm -rf "$TEMP_DIR"' EXIT
+
+get_command_source() {
+  local name="$1"
+  local local_path="${KEEL_ROOT}/commands/${name}"
+  if [ -f "$local_path" ]; then
+    echo "$local_path"
+  else
+    if [ -z "$TEMP_DIR" ]; then
+      TEMP_DIR="$(mktemp -d)"
+    fi
+    local tmp="$TEMP_DIR/$name"
+    curl -fsSL "https://raw.githubusercontent.com/paulczar/keel/main/commands/${name}" -o "$tmp"
+    echo "$tmp"
+  fi
+}
 
 install_command() {
   local dir="$1"
   local filename="$2"
+  local source="$3"
   local dest="$TARGET/$dir/$filename"
 
   mkdir -p "$TARGET/$dir"
-  cp "$COMMAND_SOURCE" "$dest"
+  cp "$source" "$dest"
   echo "  Installed $dir/$filename"
   installed=$((installed + 1))
 }
 
-echo "Installing keel-sync command in: $TARGET"
+install_commands_into() {
+  local dir="$1"
+  local cmd
+  for cmd in "${COMMANDS[@]}"; do
+    local src
+    src="$(get_command_source "$cmd")"
+    install_command "$dir" "$cmd" "$src"
+  done
+}
+
+echo "Installing Keel slash commands in: $TARGET"
 echo ""
 
 # Claude Code: .claude/commands/
 if [ -d "$TARGET/.claude" ] || command -v claude >/dev/null 2>&1; then
-  install_command ".claude/commands" "keel-sync.md"
+  install_commands_into ".claude/commands"
 fi
 
 # Cursor: .cursor/commands/
 if [ -d "$TARGET/.cursor" ] || [ -f "$TARGET/.cursorrules" ]; then
-  install_command ".cursor/commands" "keel-sync.md"
+  install_commands_into ".cursor/commands"
 fi
 
 # GitHub Copilot: .github/prompts/
 if [ -d "$TARGET/.github" ]; then
-  install_command ".github/prompts" "keel-sync.md"
+  install_commands_into ".github/prompts"
 fi
 
-# If nothing was detected, ask
+# If nothing was detected, install for all
 if [ "$installed" -eq 0 ]; then
   echo "No AI tool directories detected. Installing for all supported tools."
   echo ""
-  install_command ".claude/commands" "keel-sync.md"
-  install_command ".cursor/commands" "keel-sync.md"
-  install_command ".github/prompts" "keel-sync.md"
+  install_commands_into ".claude/commands"
+  install_commands_into ".cursor/commands"
+  install_commands_into ".github/prompts"
 fi
 
 echo ""
-echo "Done! Installed keel-sync command in $installed location(s)."
+echo "Done! Installed ${#COMMANDS[@]} command(s) in $installed location(s)."
 echo ""
 echo "Usage:"
-echo "  Claude Code:  /keel-sync"
-echo "  Cursor:       /keel-sync"
-echo "  Copilot:      /keel-sync (in Copilot Chat)"
+for cmd in "${COMMANDS[@]}"; do
+  echo "  /${cmd%.md}"
+done
 echo ""
-echo "The slash command runs keel-sync.py under the hood."
-echo "For non-AI usage: python3 scripts/keel-sync.py --clone https://github.com/paulczar/keel"
+echo "  Claude Code, Cursor, Copilot: use /<command> in chat"

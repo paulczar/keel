@@ -8,7 +8,8 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 INSTALL_SCRIPT="$REPO_ROOT/scripts/install.sh"
 FIXTURE_DIR="$REPO_ROOT/tests/fixture"
-COMMAND_SOURCE="$REPO_ROOT/commands/keel-sync.md"
+COMMAND_SYNC="$REPO_ROOT/commands/keel-sync.md"
+COMMAND_APPLY="$REPO_ROOT/commands/keel-apply.md"
 
 TMPDIR=""
 passed=0
@@ -57,10 +58,19 @@ assert_file_missing() {
 
 assert_content_matches() {
   local relpath="$1"
-  if ! diff -q "$COMMAND_SOURCE" "$TMPDIR/$relpath" >/dev/null 2>&1; then
+  local source="$2"
+  if ! diff -q "$source" "$TMPDIR/$relpath" >/dev/null 2>&1; then
     echo "  FAIL: $relpath content does not match source"
     return 1
   fi
+}
+
+assert_both_commands_installed() {
+  local dir="$1"
+  assert_file_exists "${dir}/keel-sync.md" &&
+  assert_file_exists "${dir}/keel-apply.md" &&
+  assert_content_matches "${dir}/keel-sync.md" "$COMMAND_SYNC" &&
+  assert_content_matches "${dir}/keel-apply.md" "$COMMAND_APPLY"
 }
 
 run_test() {
@@ -83,12 +93,12 @@ test_no_ai_dirs() {
   setup
   run_install
 
-  assert_file_exists ".claude/commands/keel-sync.md" &&
-  assert_file_exists ".cursor/commands/keel-sync.md" &&
+  assert_both_commands_installed ".claude/commands" &&
+  assert_both_commands_installed ".cursor/commands" &&
   assert_file_exists ".github/prompts/keel-sync.md" &&
-  assert_content_matches ".claude/commands/keel-sync.md" &&
-  assert_content_matches ".cursor/commands/keel-sync.md" &&
-  assert_content_matches ".github/prompts/keel-sync.md"
+  assert_file_exists ".github/prompts/keel-apply.md" &&
+  assert_content_matches ".github/prompts/keel-sync.md" "$COMMAND_SYNC" &&
+  assert_content_matches ".github/prompts/keel-apply.md" "$COMMAND_APPLY"
 }
 
 test_only_cursor() {
@@ -96,10 +106,9 @@ test_only_cursor() {
   mkdir -p "$TMPDIR/.cursor"
   run_install
 
-  assert_file_exists  ".cursor/commands/keel-sync.md" &&
+  assert_both_commands_installed ".cursor/commands" &&
   assert_file_missing ".claude/commands/keel-sync.md" &&
-  assert_file_missing ".github/prompts/keel-sync.md" &&
-  assert_content_matches ".cursor/commands/keel-sync.md"
+  assert_file_missing ".github/prompts/keel-sync.md"
 }
 
 test_only_claude() {
@@ -107,10 +116,9 @@ test_only_claude() {
   mkdir -p "$TMPDIR/.claude"
   run_install
 
-  assert_file_exists  ".claude/commands/keel-sync.md" &&
+  assert_both_commands_installed ".claude/commands" &&
   assert_file_missing ".cursor/commands/keel-sync.md" &&
-  assert_file_missing ".github/prompts/keel-sync.md" &&
-  assert_content_matches ".claude/commands/keel-sync.md"
+  assert_file_missing ".github/prompts/keel-sync.md"
 }
 
 test_only_github() {
@@ -118,10 +126,12 @@ test_only_github() {
   mkdir -p "$TMPDIR/.github"
   run_install
 
-  assert_file_exists  ".github/prompts/keel-sync.md" &&
+  assert_file_exists ".github/prompts/keel-sync.md" &&
+  assert_file_exists ".github/prompts/keel-apply.md" &&
+  assert_content_matches ".github/prompts/keel-sync.md" "$COMMAND_SYNC" &&
+  assert_content_matches ".github/prompts/keel-apply.md" "$COMMAND_APPLY" &&
   assert_file_missing ".claude/commands/keel-sync.md" &&
-  assert_file_missing ".cursor/commands/keel-sync.md" &&
-  assert_content_matches ".github/prompts/keel-sync.md"
+  assert_file_missing ".cursor/commands/keel-sync.md"
 }
 
 test_cursorrules_file() {
@@ -129,10 +139,9 @@ test_cursorrules_file() {
   touch "$TMPDIR/.cursorrules"
   run_install
 
-  assert_file_exists  ".cursor/commands/keel-sync.md" &&
+  assert_both_commands_installed ".cursor/commands" &&
   assert_file_missing ".claude/commands/keel-sync.md" &&
-  assert_file_missing ".github/prompts/keel-sync.md" &&
-  assert_content_matches ".cursor/commands/keel-sync.md"
+  assert_file_missing ".github/prompts/keel-sync.md"
 }
 
 # ---------- run ----------

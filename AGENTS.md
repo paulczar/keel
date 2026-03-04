@@ -35,7 +35,8 @@ Keel is a Hugo-powered CMS that serves as a centralized source of truth for AI c
 │       ├── hugo.md            # Hugo development standards
 │       └── mdc.md             # Cursor MDC format standards
 ├── commands/
-│   └── keel-sync.md           # Canonical /keel-sync slash command (tool-agnostic)
+│   ├── keel-sync.md           # Canonical /keel-sync slash command (tool-agnostic)
+│   └── keel-apply.md          # Apply best practices (LICENSE, .gitignore, CONTRIBUTING, etc.)
 ├── scripts/
 │   ├── install.sh             # Installs slash commands into target projects
 │   └── keel-sync.py           # Deterministic rule sync (no LLM needed)
@@ -137,6 +138,8 @@ Flags: `--path`, `--clone`, `--pull`, `--project`, `--formats`, `--force`, `--dr
 ### Syncing via Slash Command
 
 The `/keel-sync` slash command (`commands/keel-sync.md`) delegates to `keel-sync.py` under the hood. The LLM's role is to locate or download the script, run it, and summarize the output.
+
+The `/keel-apply` slash command (`commands/keel-apply.md`) audits the project against Keel best practices (from `scaffolding.md` and other rules) and guides the user through adding missing files such as `.gitignore`, `LICENSE`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, etc. It never creates files automatically — it presents findings, resolves ambiguity (e.g., which license), and creates only what the user explicitly agrees to.
 
 The sync generates:
 - `.agents/rules/keel/*.md` — Full rule files (Hugo metadata stripped)
