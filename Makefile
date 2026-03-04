@@ -1,6 +1,6 @@
 HUGO := /opt/homebrew/bin/hugo
 
-.PHONY: preview build clean rules test
+.PHONY: preview build clean rules test sync
 
 ## preview: Start local dev server with live reload
 preview:
@@ -25,9 +25,14 @@ rules:
 	done
 	@echo "Symlinked $(words $(CURSOR_RULES)) rules to .cursor/rules/keel/"
 
+## sync: Dry-run keel-sync.py against this repo's rules
+sync:
+	python3 scripts/keel-sync.py --path content/rules --dry-run
+
 ## test: Run tests
 test:
 	@bash tests/test-install.sh
+	@python3 -m pytest tests/test_keel_sync.py -v
 
 ## help: Show available targets
 help:

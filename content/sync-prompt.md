@@ -4,25 +4,65 @@ weight: 50
 bookToc: true
 ---
 
-# Sync Prompt
+# Syncing Rules
 
-The primary way to distribute Keel rules is to **ask your AI coding agent to do it**. Copy the prompt below, paste it into your agent in the target project, and let it figure out which rules apply and where to put them.
+The primary way to sync Keel rules into a project is the `keel-sync.py` script — a deterministic, zero-dependency Python tool that reads rule frontmatter, matches globs against the target project, and writes output files. Same input always produces the same output.
 
-This works with any AI coding agent — Claude Code, Cursor, GitHub Copilot, Windsurf, Codex, or anything that accepts natural language instructions.
+## Quick Start
+
+No install needed — run directly with curl:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/paulczar/keel/main/scripts/keel-sync.py | python3 - --clone https://github.com/paulczar/keel
+```
+
+This shallow-clones the Keel repo to a temp directory, detects your project's languages and AI tooling, and writes the matching rules.
+
+## Direct Script Usage
+
+### From a local Keel clone
+
+```bash
+python3 scripts/keel-sync.py --path /path/to/keel/content/rules --project /path/to/target
+```
+
+### Shallow-clone and sync (no local clone needed)
+
+```bash
+python3 scripts/keel-sync.py --clone https://github.com/paulczar/keel --project /path/to/target
+```
+
+### Preview changes without writing
+
+```bash
+python3 scripts/keel-sync.py --path content/rules --dry-run
+```
+
+### Specify output formats explicitly
+
+```bash
+python3 scripts/keel-sync.py --path content/rules --formats agents,cursor
+```
+
+The script auto-detects output formats (Cursor, AGENTS.md, CLAUDE.md) based on what exists in the target project. Use `--formats` to override. It respects `.keelignore` in the target project root.
+
+**Flags:** `--path`, `--clone`, `--pull`, `--project`, `--formats`, `--force`, `--dry-run`.
 
 ## Slash Commands
 
-The easiest way to sync is with a slash command. Run the installer in any target project — it detects which AI tools are present and installs the `/keel-sync` command in the right places.
+For AI-assisted sync, install the `/keel-sync` slash command. The command delegates to `keel-sync.py` under the hood — the LLM locates or downloads the script, runs it, and reports the results.
+
+### Install
 
 ```bash
 # From a Keel clone
 ./scripts/install.sh /path/to/target-project
 
 # Or via curl (no clone needed)
-curl -fsSL https://raw.githubusercontent.com/your-org/keel/main/scripts/install.sh | bash -s /path/to/target-project
+curl -fsSL https://raw.githubusercontent.com/paulczar/keel/main/scripts/install.sh | bash -s /path/to/target-project
 ```
 
-The installer writes the command to:
+The installer detects which AI tools are present and writes the command to:
 
 | Tool | Location |
 |------|----------|
@@ -30,13 +70,13 @@ The installer writes the command to:
 | Cursor | `.cursor/commands/keel-sync.md` |
 | GitHub Copilot | `.github/prompts/keel-sync.md` |
 
-Then in the target project:
+### Run
 
 ```
 /keel-sync
 ```
 
-It defaults to fetching rules from the GitHub repo. You can also pass a local path:
+It defaults to cloning rules from the GitHub repo. You can also pass a local path:
 
 ```
 /keel-sync /path/to/keel/content/rules/
@@ -44,9 +84,11 @@ It defaults to fetching rules from the GitHub repo. You can also pass a local pa
 
 The command files are project-local and committable — your whole team gets them.
 
-## Manual Usage
+## Manual AI-Driven Sync (Legacy)
 
-If you prefer not to install the slash command, copy the prompt below directly:
+If you prefer to have the AI agent handle the full sync without the script (e.g., the agent doesn't have shell access), copy the prompt below into your agent in the target project.
+
+This works with any AI coding agent — Claude Code, Cursor, GitHub Copilot, Windsurf, Codex, or anything that accepts natural language instructions.
 
 1. Open your AI coding agent in the **target project**
 2. Copy the prompt below
@@ -55,7 +97,7 @@ If you prefer not to install the slash command, copy the prompt below directly:
 
 ---
 
-## The Prompt
+### The Prompt
 
 ```markdown
 # Sync Coding Rules from Keel

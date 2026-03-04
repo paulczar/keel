@@ -1,12 +1,13 @@
 # Testing Guide
 
 This document covers how to test Keel end-to-end: the install script, the
-`/keel-sync` slash command, and the Hugo site build.
+`keel-sync.py` script, the `/keel-sync` slash command, and the Hugo site build.
 
 ## Prerequisites
 
 - Bash 4+
 - Git
+- Python 3
 - Hugo (`/opt/homebrew/bin/hugo` or adjust `HUGO` in `Makefile`)
 - At least one AI tool: Claude Code (`claude`), Cursor, or GitHub Copilot
 
@@ -31,7 +32,70 @@ regardless of which AI CLIs you have installed.
 | `.github/` exists | `mkdir .github` | only `.github/prompts/keel-sync.md` |
 | `.cursorrules` file | `touch .cursorrules` | only `.cursor/commands/keel-sync.md` |
 
-## 2. Manual Install Test
+## 2. keel-sync.py Tests
+
+Run the pytest suite for `scripts/keel-sync.py`:
+
+```bash
+python3 -m pytest tests/test_keel_sync.py -v
+```
+
+Or run all tests together:
+
+```bash
+make test
+```
+
+### Manual end-to-end test
+
+```bash
+# Create a throwaway project
+mkdir /tmp/keel-sync-test && cd /tmp/keel-sync-test
+git init
+echo 'package main' > main.go
+echo 'module example.com/test' > go.mod
+
+# Dry-run to preview which rules match and what would be written
+python3 /path/to/keel/scripts/keel-sync.py \
+  --path /path/to/keel/content/rules \
+  --project . \
+  --dry-run
+
+# Actual sync
+python3 /path/to/keel/scripts/keel-sync.py \
+  --path /path/to/keel/content/rules \
+  --project .
+
+# Verify output
+ls -la .agents/rules/keel/
+cat AGENTS.md
+head -20 .agents/rules/keel/base.md   # should NOT have title/tags/weight
+
+# Cleanup
+rm -rf /tmp/keel-sync-test
+```
+
+### Curl one-liner test
+
+Verify the script can be run without a local clone:
+
+```bash
+mkdir /tmp/keel-curl-test && cd /tmp/keel-curl-test
+git init
+echo 'package main' > main.go
+echo 'module example.com/test' > go.mod
+
+# Run via curl — should clone, detect Go, and sync rules
+curl -fsSL https://raw.githubusercontent.com/paulczar/keel/main/scripts/keel-sync.py | python3 - --clone https://github.com/paulczar/keel --project .
+
+# Verify
+ls -la .agents/rules/keel/
+
+# Cleanup
+rm -rf /tmp/keel-curl-test
+```
+
+## 3. Manual Install Test
 
 Test the install script against a real project on your machine:
 
@@ -58,10 +122,11 @@ Verify:
 - [ ] Script downloads `keel-sync.md` from GitHub and installs it
 - [ ] Same detection logic applies
 
-## 3. Testing `/keel-sync` with Claude Code
+## 4. Testing `/keel-sync` with Claude Code
 
-This is the real end-to-end test: run the slash command and watch the AI agent
-sync rules into a target project.
+The slash command delegates to `keel-sync.py`. The AI agent's job is to locate
+or download the script, run it, and report the output — not to perform the
+sync logic itself.
 
 ### Setup
 
@@ -70,7 +135,7 @@ sync rules into a target project.
 mkdir /tmp/keel-test-project && cd /tmp/keel-test-project
 git init
 
-# give it some language files so the agent has something to detect
+# give it some language files so the script has something to detect
 cat > main.go <<'EOF'
 package main
 
@@ -100,33 +165,24 @@ claude
 Then run:
 
 ```
-/keel-sync /path/to/keel/content/rules/
+/keel-sync
 ```
 
 ### What to verify
 
 The agent should:
 
-1. **Inspect the project** — recognize Go files (`main.go`, `go.mod`)
-2. **Select rules** — tell you which rules it picked and why:
-   - `base.md` (alwaysApply: true)
-   - `agent-behavior.md` (alwaysApply: true)
-   - `scaffolding.md` (alwaysApply: true)
-   - `go.md` (globs match `*.go` / `go.mod`)
-   - Possibly `markdown.md` if it sees `.md` files
-   - Should skip: `typescript.md`, `python.md`, `helm.md`, `terraform.md`,
-     `kubernetes.md`, `hugo.md`, `mdc.md`
-3. **Detect output formats** — since `.claude/` exists (we just installed
-   the command there), it should generate Claude/AGENTS format
-4. **Create files** — check that these exist afterward:
-   - `.agents/rules/keel/base.md`
-   - `.agents/rules/keel/agent-behavior.md`
-   - `.agents/rules/keel/scaffolding.md`
-   - `.agents/rules/keel/go.md`
-   - `AGENTS.md` with a routing table
-5. **Strip Hugo fields** — open any generated rule file and confirm that
-   `title`, `tags`, and `weight` are removed from the frontmatter, but
-   `description`, `globs`, and `alwaysApply` are kept
+1. **Check for python3** — verify it's available
+2. **Locate or download keel-sync.py** — via `KEEL_PATH`, sibling dir, or curl
+3. **Run the script** — with `--clone https://github.com/paulczar/keel --force`
+4. **Report the output** — show which rules were selected, formats generated,
+   and files written
+
+The script (not the LLM) handles:
+- Project inspection and language detection
+- Rule selection based on globs and `alwaysApply`
+- Format detection (Cursor, AGENTS.md, CLAUDE.md)
+- File generation with Hugo field stripping
 
 ### Verify the output
 
@@ -139,14 +195,11 @@ cat AGENTS.md
 head -20 .agents/rules/keel/base.md
 # should NOT contain: title, tags, weight
 # should contain: description, globs, alwaysApply
-
-# confirm the routing table
-grep -c '|' AGENTS.md   # should have table rows
 ```
 
-## 4. Testing `/keel-sync` with Cursor
+## 5. Testing `/keel-sync` with Cursor
 
-Same setup as above, but create a `.cursor/` directory so the agent detects
+Same setup as above, but create a `.cursor/` directory so the script detects
 Cursor format:
 
 ```bash
@@ -157,17 +210,17 @@ mkdir .cursor
 /path/to/keel/scripts/install.sh .
 ```
 
-Open Cursor, then run `/keel-sync` and provide the path to
-`/path/to/keel/content/rules/` when prompted.
+Open Cursor, then run `/keel-sync`.
 
 Verify:
+- [ ] The agent runs `keel-sync.py` (not doing the sync itself)
 - [ ] `.cursor/rules/keel/base.mdc` exists (note `.mdc` extension)
 - [ ] `.cursor/rules/keel/go.mdc` exists
 - [ ] Frontmatter has `description`, `globs`, `alwaysApply` but not `title`,
       `tags`, `weight`
 - [ ] Rule body content matches the source
 
-## 5. Testing with Multiple AI Tools
+## 6. Testing with Multiple AI Tools
 
 Create a project with markers for all tools:
 
@@ -180,12 +233,13 @@ mkdir .cursor .claude .github
 /path/to/keel/scripts/install.sh .
 ```
 
-Run `/keel-sync` from any tool. Verify the agent generates all formats:
+Run `/keel-sync` from any tool. Verify the agent runs the script and it generates
+all formats:
 - [ ] `.cursor/rules/keel/*.mdc`
 - [ ] `.agents/rules/keel/*.md`
 - [ ] `AGENTS.md`
 
-## 6. Hugo Site Build
+## 7. Hugo Site Build
 
 Verify the documentation site builds without errors:
 
@@ -212,7 +266,7 @@ Then open `http://localhost:1313/keel/` and check:
 - [ ] Search works
 - [ ] Sync prompt page renders correctly
 
-## 7. Cleanup
+## 8. Cleanup
 
 ```bash
 rm -rf /tmp/keel-test-project /tmp/keel-test-cursor /tmp/keel-test-multi

@@ -1,0 +1,13 @@
+# Files that should not trigger language-specific rule selection.
+# Patterns follow fnmatch syntax, matched against paths relative to project root.
+# Trailing / matches directories. Lines starting with # are comments.
+
+# Tooling scripts — don't let these pull in language rules
+scripts/
+
+# Generated AI config files — these are outputs, not source
+AGENTS.md
+CLAUDE.md
+
+# Standard project docs — don't trigger markdown rule for a Go project
+README.md

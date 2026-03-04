@@ -1,127 +1,48 @@
 # Sync Coding Rules from Keel
 
-You are setting up AI coding rules for this project. The rules are maintained
-in a central repository (Project Keel) and need to be synced here in the
-formats this project uses.
+You are syncing AI coding rules into this project using the `keel-sync.py` script from Project Keel. Your job is to locate or download the script, run it, and report the results.
 
-## Source
+## Step 1: Check prerequisites
 
-The Keel rule files can come from either:
-1. **A local path** provided as an argument (the `content/rules/` directory)
-2. **The GitHub repository** at `https://github.com/paulczar/keel`
+Verify `python3` is available:
 
-If no argument was provided, default to fetching from the GitHub repo. Use the
-GitHub API or raw content URLs to read files directly — no local clone needed.
-For example: `https://raw.githubusercontent.com/paulczar/keel/main/content/rules/`
-
-Each rule file is Markdown with YAML frontmatter containing these fields:
-- `title` — Human-readable name (Hugo-only, do not sync)
-- `description` — When this rule applies
-- `globs` — File patterns that activate the rule
-- `alwaysApply` — true if the rule applies globally, false if scoped by globs
-- `tags` — Categories (Hugo-only, do not sync)
-- `weight` — Sort order (Hugo-only, do not sync)
-
-Ignore `_index.md` — it is a Hugo section index, not a rule.
-
-## Step 1: Inspect this project
-
-Look at the project structure — check for files like `package.json`, `go.mod`,
-`pyproject.toml`, `Pipfile`, `Cargo.toml`, `Chart.yaml`, `*.yaml`, `*.tf`,
-`Dockerfile`, etc. Determine which languages and frameworks are in use.
-
-## Step 2: Select relevant rules
-
-List all rule files from the source, but **only read the YAML frontmatter**
-(the content between the opening `---` and closing `---`) of each file. Do NOT
-read the full file body at this stage — frontmatter alone contains `alwaysApply`,
-`globs`, and `description`, which is all you need to determine relevance.
-
-Select rules that are relevant:
-- **Always include** rules where `alwaysApply: true` (e.g., `base.md`)
-- **Include** language/framework rules whose `globs` match files that exist
-  in this project (e.g., include `typescript.md` if there are `.ts` files)
-- **Skip** rules for languages/frameworks not present in this project
-
-Tell me which rules you selected and why before proceeding.
-
-Only read the full body of selected rules in Step 4 when generating output.
-
-## Step 3: Detect output formats
-
-Check what AI tooling this project already uses and determine which output
-formats to generate:
-
-| Signal | Format | Output Location |
-|--------|--------|-----------------|
-| `.cursor/` directory or `.cursorrules` exists | Cursor (MDC) | `.cursor/rules/keel/<name>.mdc` |
-| `AGENTS.md` exists or project uses GitHub | AGENTS.md | `AGENTS.md` (root) + `.agents/rules/keel/<name>.md` |
-| `CLAUDE.md` exists | Claude Code | Append references to `CLAUDE.md` |
-| `.github/copilot-instructions.md` exists | Copilot | Append references to instructions file |
-| None of the above detected | Default | Ask me which formats I want |
-
-Rules are placed in a `keel/` subdirectory to support the layering model.
-The project can add `org/` and `local/` subdirectories alongside `keel/`
-to override or extend rules. See the base rule for precedence instructions.
-
-If multiple formats are detected, generate all of them.
-
-## Step 4: Generate output
-
-### For `.agents/rules/keel/*.md` files:
-Copy the rule files as-is, but **strip Hugo-only frontmatter fields** (`title`,
-`tags`, `weight`). Keep `description`, `globs`, and `alwaysApply`.
-
-### For `.cursor/rules/keel/*.mdc` files:
-Same as above — strip `title`, `tags`, `weight` from frontmatter. Change the
-file extension to `.mdc`. The body content stays identical.
-
-### For `AGENTS.md`:
-Generate a routing table at the top:
-
-```
-# AGENTS.md
-
-## Rules
-
-| Rule | Globs | Always Apply |
-|------|-------|-------------|
-| base | `["**/*"]` | true |
-| typescript | `["**/*.ts", "**/*.tsx"]` | false |
-...
-
-## Rule Details
-
-### base
-- **Description:** Global coding standards
-- **Globs:** `["**/*"]`
-- **File:** `.agents/rules/keel/base.md`
+```bash
+python3 --version
 ```
 
-Include a `## Rule Details` section with each rule's description, globs, and
-a reference to the full file in `.agents/rules/keel/`.
+If not found, tell the user to install Python 3 and stop.
 
-### For `CLAUDE.md` (if applicable):
-Add a section pointing to the rule files:
-```
-## Coding Rules
-See `.agents/rules/keel/` for detailed coding standards. Key rules:
-- `.agents/rules/keel/base.md` — Global standards (always apply)
-- `.agents/rules/keel/typescript.md` — TypeScript conventions (*.ts, *.tsx)
-```
+## Step 2: Locate the sync script
 
-## Step 5: Handle existing rules
+Try these in order — use the first one that works:
 
-- If rule files already exist at the target paths, **show me the diff** and
-  ask before overwriting
-- If the project has hand-written rules (e.g., a custom `CLAUDE.md` or
-  `.cursorrules`), **do not overwrite** — instead, append or create new files
-  alongside them
-- Never delete files that Keel didn't create
+1. **`KEEL_PATH` env var** — if set, the script is at `$KEEL_PATH/scripts/keel-sync.py`
+2. **Sibling directory** — look for `../keel/scripts/keel-sync.py` relative to this project
+3. **Download** — fetch the script to a temp location:
+   ```bash
+   curl -fsSL https://raw.githubusercontent.com/paulczar/keel/main/scripts/keel-sync.py -o /tmp/keel-sync.py
+   ```
 
-## Step 6: Summary
+Set `SCRIPT` to the path of whichever you found.
 
-After syncing, show me:
-1. Which rules were synced and which were skipped (with reasons)
-2. Which output formats were generated
-3. A list of all files created or modified
+## Step 3: Run the script
+
+Build the command based on the arguments provided:
+
+- **If an argument was provided** (a local path or URL):
+  - If it looks like a URL (`https://...`): `python3 $SCRIPT --clone <arg>`
+  - Otherwise: `python3 $SCRIPT --path <arg>`
+- **If `KEEL_PATH` is set**: `python3 $SCRIPT --path $KEEL_PATH`
+- **Otherwise**: `python3 $SCRIPT --clone https://github.com/paulczar/keel`
+
+Always add `--force` so the script overwrites without prompting.
+
+Run the command and capture the output.
+
+## Step 4: Report results
+
+Show the user the script output. Summarize:
+- Which rules were selected and which were skipped
+- Which output formats were generated
+- How many files were written
+- Any errors encountered

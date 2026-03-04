@@ -37,7 +37,8 @@ Keel is a Hugo-powered CMS that serves as a centralized source of truth for AI c
 ├── commands/
 │   └── keel-sync.md           # Canonical /keel-sync slash command (tool-agnostic)
 ├── scripts/
-│   └── install.sh             # Installs slash commands into target projects
+│   ├── install.sh             # Installs slash commands into target projects
+│   └── keel-sync.py           # Deterministic rule sync (no LLM needed)
 ├── .cursor/
 │   └── rules/keel/            # Symlinks to content/rules/ for local use
 ├── layouts/
@@ -113,16 +114,38 @@ Higher layers fully replace lower-layer rules on the same topic. Non-conflicting
 - Styles: `assets/_custom.scss`
 - Hugo reads `.Params` from frontmatter — field names are lowercased by Hugo
 
-### Syncing Rules to a Target Repo
+### Syncing with keel-sync.py
 
-Use the sync prompt at `content/sync-prompt.md`. The user copies the prompt into their AI coding agent in the target project. The agent inspects the project, selects relevant rules, and generates the appropriate output formats.
+`scripts/keel-sync.py` is the primary sync method — a deterministic, zero-dependency Python script that reads rule frontmatter, matches globs against the target project, and writes output files. Same input always produces same output.
 
-The sync prompt generates:
+```bash
+# No install needed — run directly with curl
+curl -fsSL https://raw.githubusercontent.com/paulczar/keel/main/scripts/keel-sync.py | python3 - --clone https://github.com/paulczar/keel
+
+# Sync from a local Keel clone
+python3 scripts/keel-sync.py --path /path/to/keel/content/rules --project /path/to/target
+
+# Shallow-clone and sync
+python3 scripts/keel-sync.py --clone https://github.com/paulczar/keel --project /path/to/target
+
+# Preview what would change
+python3 scripts/keel-sync.py --path content/rules --dry-run
+```
+
+Flags: `--path`, `--clone`, `--pull`, `--project`, `--formats`, `--force`, `--dry-run`.
+
+### Syncing via Slash Command
+
+The `/keel-sync` slash command (`commands/keel-sync.md`) delegates to `keel-sync.py` under the hood. The LLM's role is to locate or download the script, run it, and summarize the output.
+
+The sync generates:
 - `.agents/rules/keel/*.md` — Full rule files (Hugo metadata stripped)
 - `.cursor/rules/keel/*.mdc` — Cursor-compatible rule files
 - `AGENTS.md` — Routing table with globs, descriptions, and file references
 
 Rules are placed in `keel/` subdirectories to support the layering model (see Rule Layering above).
+
+A legacy manual prompt is available in `content/sync-prompt.md` for agents without shell access.
 
 ### Using Rules Locally (Dogfooding)
 

@@ -31,15 +31,30 @@ Run `make preview` and open the local site to browse all rules with search, tagg
 
 ### Syncing Rules to a Project
 
-Install the `/keel-sync` slash command into a target project:
+Use `keel-sync.py` to sync rules into any project — no AI agent needed:
+
+```bash
+# No install needed — run directly with curl
+curl -fsSL https://raw.githubusercontent.com/paulczar/keel/main/scripts/keel-sync.py | python3 - --clone https://github.com/paulczar/keel
+
+# Or from a local Keel clone
+python3 scripts/keel-sync.py --path content/rules --project /path/to/target
+
+# Preview what would change
+python3 scripts/keel-sync.py --clone https://github.com/paulczar/keel --dry-run
+```
+
+The script auto-detects languages, AI tooling formats, and writes matching rules.
+
+Alternatively, install the `/keel-sync` slash command for AI-assisted sync (it runs the script under the hood):
 
 ```bash
 ./scripts/install.sh /path/to/target-project
 ```
 
-Then in the target project, run `/keel-sync /path/to/keel/content/rules/` in Claude Code, Cursor, or Copilot. The agent inspects the project, selects relevant rules, and generates the right output formats.
+Then run `/keel-sync` in Claude Code, Cursor, or Copilot.
 
-See the [Sync Prompt](/sync-prompt) page for manual usage and details.
+See the [Sync Prompt](/sync-prompt) page for full details and options.
 
 ### Adding a New Rule
 
