@@ -1,5 +1,7 @@
 # Project Keel
 
+[https://tech.paulcz.net/keel/](https://tech.paulcz.net/keel/)
+
 **Standardized rules for AI-assisted software development.**
 
 Keel is a Hugo-powered CMS that serves as a centralized source of truth for AI coding rules. Write your coding standards once as Markdown; sync them to any project in any format (AGENTS.md, Cursor MDC, Claude Code, Copilot).
