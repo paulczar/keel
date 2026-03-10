@@ -33,15 +33,9 @@ Run `make preview` and open the local site to browse all rules with search, tagg
 
 ### Cursor Plugin (Recommended for Cursor Users)
 
-Install Keel as a Cursor Plugin for native rule distribution — no scripts required:
+Keel can be installed as a [Cursor Plugin](https://cursor.com/docs/plugins) directly from its Git repo. Choose the method that fits your setup:
 
-1. Open the Cursor marketplace (Settings → Plugins, or the marketplace panel)
-2. Search for **keel** and install
-3. Rules and commands (`/keel-sync`, `/keel-apply`) are available immediately
-
-The plugin installs all rules; Cursor activates them per-file based on `globs` and `alwaysApply`.
-
-**Local install** (if Keel isn't in the marketplace yet, or for testing):
+**Individual install** (any Cursor plan):
 
 ```bash
 # No clone needed — fetch and install in one step
@@ -51,7 +45,22 @@ curl -fsSL https://raw.githubusercontent.com/paulczar/keel/main/scripts/install-
 ./scripts/install-plugin.sh
 ```
 
-Then restart Cursor. For `/keel-sync` to find the script when syncing to other projects, add `export KEEL_PATH=~/.cursor/plugins/keel` to your shell profile.
+Restart Cursor after installing. You may need to enable **Settings > Features > "Include third-party Plugins, Skills, and other configs"**.
+
+**Team Marketplace** (Teams / Enterprise plans):
+
+1. Go to **Dashboard > Settings > Plugins**
+2. Under **Team Marketplaces**, click **Import**
+3. Paste the repo URL: `https://github.com/paulczar/keel`
+4. Set as **required** (auto-install for all members) or **optional**
+
+Once installed, rules activate per-file based on `globs` and `alwaysApply`, and commands (`/keel-sync`, `/keel-apply`) are available immediately.
+
+To use `/keel-sync` when syncing to other projects, add to your shell profile:
+
+```bash
+export KEEL_PATH=~/.cursor/plugins/keel
+```
 
 ### Syncing Rules to a Project (Multi-Tool)
 

@@ -80,13 +80,38 @@ A centralized CMS with sync tooling enforces organizational standards. Teams sha
 
 1. **Author rules** in `content/rules/` using Markdown with YAML frontmatter (title, description, globs, alwaysApply, tags)
 2. **Preview** the documentation site locally with `hugo server`
-3. **Sync** rules to any project using the [Sync Prompt]({{< relref "/sync-prompt" >}})
-   - Open your AI coding agent in the target project
-   - Paste the sync prompt — it tells the agent to inspect your project, select relevant rules, and generate the right output formats
-   - The agent adapts: it only syncs rules that match your stack and writes to the formats your project actually uses
-4. **Commit & deploy** — the target repo now has AI-agent-ready rules in all formats
+3. **Distribute** rules to any project — choose the path that fits:
 
-> **Why a prompt instead of a script?** Your AI agent can inspect the target project, skip irrelevant rules, detect which output formats are needed, and handle conflicts intelligently. A bash script can't.
+### Cursor Plugin
+
+Keel can be installed as a [Cursor Plugin](https://cursor.com/docs/plugins) directly from this Git repo.
+
+**Individual install** (any Cursor plan):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/paulczar/keel/main/scripts/install-plugin.sh | bash -s -- --clone https://github.com/paulczar/keel
+```
+
+Restart Cursor after installing. You may need to enable **Settings > Features > "Include third-party Plugins, Skills, and other configs"**.
+
+**Team Marketplace** (Teams / Enterprise plans):
+
+1. Go to **Dashboard > Settings > Plugins**
+2. Under **Team Marketplaces**, click **Import**
+3. Paste the repo URL: `https://github.com/paulczar/keel`
+4. Set as **required** (auto-install for all members) or **optional**
+
+Once installed, rules activate per-file based on `globs` and `alwaysApply`, and commands (`/keel-sync`, `/keel-apply`) are available immediately.
+
+### Multi-Tool Sync (`keel-sync.py`)
+
+Use the sync script when you need rules in **Claude Code**, **AGENTS.md**, **GitHub Copilot**, or prefer script-based sync:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/paulczar/keel/main/scripts/keel-sync.py | python3 - --clone https://github.com/paulczar/keel
+```
+
+The script inspects your project, selects only relevant rules based on your stack, detects which output formats are needed, and writes rules to the appropriate directories.
 
 ### Rule Format
 

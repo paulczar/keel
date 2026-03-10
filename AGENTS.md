@@ -1,5 +1,9 @@
 # AGENTS.md
 
+## Project Instructions
+
+- When updating `README.md`, also update `content/_index.md` (the Hugo landing page) to reflect the same changes. These two files describe the same project and must stay in sync. The landing page uses Hugo shortcodes (`{{< columns >}}`, `{{< relref >}}`) — preserve those when editing.
+
 <!-- keel:start - DO NOT EDIT between these markers -->
 ## Rules
 
