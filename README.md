@@ -31,9 +31,31 @@ make build
 
 Run `make preview` and open the local site to browse all rules with search, tagging, and navigation.
 
-### Syncing Rules to a Project
+### Cursor Plugin (Recommended for Cursor Users)
 
-Use `keel-sync.py` to sync rules into any project — no AI agent needed:
+Install Keel as a Cursor Plugin for native rule distribution — no scripts required:
+
+1. Open the Cursor marketplace (Settings → Plugins, or the marketplace panel)
+2. Search for **keel** and install
+3. Rules and commands (`/keel-sync`, `/keel-apply`) are available immediately
+
+The plugin installs all rules; Cursor activates them per-file based on `globs` and `alwaysApply`.
+
+**Local install** (if Keel isn't in the marketplace yet, or for testing):
+
+```bash
+# No clone needed — fetch and install in one step
+curl -fsSL https://raw.githubusercontent.com/paulczar/keel/main/scripts/install-plugin.sh | bash -s -- --clone https://github.com/paulczar/keel
+
+# Or from a Keel clone
+./scripts/install-plugin.sh
+```
+
+Then restart Cursor. For `/keel-sync` to find the script when syncing to other projects, add `export KEEL_PATH=~/.cursor/plugins/keel` to your shell profile.
+
+### Syncing Rules to a Project (Multi-Tool)
+
+Use `keel-sync.py` when you need rules in **Claude Code**, **AGENTS.md**, **GitHub Copilot**, or prefer script-based sync for Cursor:
 
 ```bash
 # No install needed — run directly with curl
@@ -46,9 +68,7 @@ python3 scripts/keel-sync.py --path content/rules --project /path/to/target
 python3 scripts/keel-sync.py --clone https://github.com/paulczar/keel --dry-run
 ```
 
-The script auto-detects languages, AI tooling formats, writes matching rules, and installs slash commands (keel-sync, keel-apply, etc.) into `.cursor/commands/`, `.claude/commands/`, and `.github/prompts/`.
-
-To use slash commands (e.g. `/keel-sync`, `/keel-apply`) in Claude Code, Cursor, or Copilot, run `keel-sync.py` once — it installs them. No separate install step.
+The script auto-detects languages and AI tooling formats, writes matching rules to the appropriate directories, and installs slash commands into `.cursor/commands/`, `.claude/commands/`, and `.github/prompts/`. Run it once per project to install commands.
 
 See the [Sync Prompt](/sync-prompt) page for full details and options.
 

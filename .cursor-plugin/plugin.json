@@ -1,0 +1,23 @@
+{
+  "name": "keel",
+  "version": "1.0.0",
+  "description": "Standardized coding rules for AI-assisted development — language conventions, safety standards, and project scaffolding",
+  "author": {
+    "name": "Paul Czarkowski"
+  },
+  "homepage": "https://tech.paulcz.net/keel/",
+  "repository": "https://github.com/paulczar/keel",
+  "license": "Apache-2.0",
+  "keywords": [
+    "rules",
+    "coding-standards",
+    "go",
+    "python",
+    "typescript",
+    "kubernetes",
+    "terraform",
+    "hugo"
+  ],
+  "rules": "content/rules/",
+  "commands": "commands/"
+}

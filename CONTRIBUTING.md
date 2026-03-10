@@ -55,6 +55,8 @@ make rules
 hugo new --kind rule content/rules/my-rule.md
 ```
 
+New rules in `content/rules/` are automatically available via both the Cursor Plugin and `keel-sync.py` — no additional steps needed.
+
 Every rule should include:
 
 - **Tooling** section — formatters, linters, validators for that language/tool
