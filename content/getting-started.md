@@ -37,9 +37,11 @@ The vault will look like this:
 ├── AGENTS.md              ← behavioral guidelines (picked from profiles)
 ├── content/
 │   ├── keel/              ← git clone of keel repo (the framework)
-│   │   ├── rules/
-│   │   ├── skills/
-│   │   └── knowledge/
+│   │   ├── rules/         ← coding standards
+│   │   ├── skills/        ← reusable procedures
+│   │   ├── knowledge/     ← persistent wiki
+│   │   ├── behaviors/     ← selectable agent profiles
+│   │   └── mcp/           ← recommended MCP tools
 │   └── local/             ← my personal knowledge
 │       └── knowledge/
 ├── .gitignore
@@ -57,9 +59,10 @@ Then ask each question one at a time. Don't batch them.
 ```
 
 After the agent finishes, you'll have a working keel vault. From there:
-- Browse your rules and skills by opening the vault in Obsidian
+- Open the vault in Obsidian to browse rules, skills, and knowledge
 - View the documentation site by running `hugo server` in `content/keel/`
-- Sync rules to a project by running `keel-sync.py`
+- Install recommended MCP tools via the sync-mcp skill
+- Set your vault path in any project's AGENTS.md to use it in vault mode
 
 ## Next Steps
 
@@ -67,6 +70,7 @@ After the agent finishes, you'll have a working keel vault. From there:
 - **Learn about [skills]({{< relref "/skills" >}})** — reusable agent procedures
 - **Learn about the [knowledge wiki]({{< relref "/knowledge" >}})** — persistent agent memory
 - **Learn about [behavior profiles]({{< relref "/behaviors" >}})** — choose your agent's style
+- **Learn about [MCP tools]({{< relref "/mcp" >}})** — recommended MCP servers for knowledge management
 - **Read the [design document](https://github.com/paulczar/keel/blob/main/DESIGN.md)** — full architecture
 
 ## Manual Setup
