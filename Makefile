@@ -25,7 +25,22 @@ rules:
 	done
 	@echo "Symlinked $(words $(CURSOR_RULES)) rules to .cursor/rules/keel/"
 
-## sync: Dry-run keel-sync.py against this repo's rules
+## skills: Symlink skills into .opencode/skills/ for local development
+skills:
+	@mkdir -p .opencode/skills
+	@for skill in content/skills/*.md; do \
+		name=$$(basename "$$skill" .md); \
+		[ "$$name" = "_index" ] && continue; \
+		mkdir -p ".opencode/skills/$$name"; \
+		ln -sf "../../../$$skill" ".opencode/skills/$$name/SKILL.md"; \
+	done
+	@echo "Symlinked skills to .opencode/skills/"
+
+## dev-sync: Symlink rules + skills for local development
+dev-sync: rules skills
+	@echo "Local development sync complete"
+
+## sync: Dry-run keel-sync.py against this repo's content
 sync:
 	python3 scripts/keel-sync.py --path content/rules --dry-run
 

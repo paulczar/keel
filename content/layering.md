@@ -6,6 +6,10 @@ bookToc: true
 
 # Rule Layering
 
+> **Vault mode is the recommended approach.** Instead of managing rule layers inside each project, maintain a keel vault at `~/.keel/` and reference it from your project's AGENTS.md. Multiple vaults (keel, org, personal) act as implicit layers with precedence resolved by the agent. [Get started →]({{< relref "/getting-started" >}})
+
+The page below describes the **project-local layering model** — subdirectory-based precedence within a single project's `.cursor/rules/` or `.agents/rules/`. This is a valid pattern, but vault mode is simpler for most users.
+
 Keel supports three layers of rules that let organizations define global defaults while allowing teams and projects to customize behavior. Agents resolve conflicts between layers using precedence instructions embedded in the base rule.
 
 ## The Three Layers

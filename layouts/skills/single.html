@@ -1,0 +1,24 @@
+{{ define "main" }}
+  <article class="markdown book-article">
+    {{- with .Params.description }}
+    <div class="skill-header" style="margin-bottom: 1.5rem; padding: 1rem; background: var(--gray-100); border-radius: 0.5rem;">
+      <p style="margin: 0; font-size: 1.1rem; color: var(--body-font-color);">{{ . | markdownify }}</p>
+      {{- with $.Params.compatibility }}
+      <p style="margin: 0.5rem 0 0; font-size: 0.9rem;">
+        <strong>Compatible with:</strong> {{ . }}
+      </p>
+      {{- end }}
+    </div>
+    {{- end }}
+
+    {{ .Content }}
+
+    <footer class="skill-footer" style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--gray-200); font-size: 0.85rem; color: var(--gray-600);">
+      <p>This is a keel skill — a reusable procedure for AI agents. Skills are loaded on-demand via native agent tooling.</p>
+    </footer>
+  </article>
+{{ end }}
+
+{{ define "toc" }}
+  {{ partial "docs/toc" . }}
+{{ end }}

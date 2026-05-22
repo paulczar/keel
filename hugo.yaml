@@ -9,7 +9,7 @@ taxonomies:
   tag: tags
 
 params:
-  BookSection: rules
+  BookSection: ["rules", "skills", "knowledge"]
   BookSearch: true
   BookRepo: https://github.com/paulczar/keel
   BookEditPath: edit/main

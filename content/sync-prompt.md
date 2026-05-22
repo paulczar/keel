@@ -6,7 +6,11 @@ bookToc: true
 
 # Syncing Rules
 
-The primary way to sync Keel rules into a project is the `keel-sync.py` script — a deterministic, zero-dependency Python tool that reads rule frontmatter, matches globs against the target project, and writes output files. Same input always produces the same output.
+> **Vault mode is the recommended approach.** Instead of syncing rules into each project, maintain a keel vault at `~/.keel/` and reference it from your project's AGENTS.md. Agents read rules, skills, and knowledge directly from the vault — no sync needed. [Get started →]({{< relref "/getting-started" >}})
+
+The page below describes the **project-local sync workflow** via `keel-sync.py`. This is useful if you prefer rules inside each project rather than a shared vault.
+
+The `keel-sync.py` script is a deterministic, zero-dependency Python tool that reads rule frontmatter, matches globs against the target project, and writes output files. Same input always produces the same output.
 
 ## Quick Start
 

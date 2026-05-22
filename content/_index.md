@@ -5,9 +5,11 @@ type: docs
 
 # Project Keel
 
-**Standardized Rules for AI-Assisted Software Development**
+**Rules, skills, and knowledge for AI-assisted software development.**
 
-Keel is an opinionated [AGENTS.md](https://agents.md/) implementation — a governance CMS that produces AGENTS.md-compatible output following the Linux Foundation's open standard. Write your coding standards once; sync them everywhere.
+Keel is a cross-agent content management system for everything your AI agents need — coding standards, reusable procedures, and a persistent knowledge wiki. One vault, multiple tools, agent-first setup.
+
+**[Get started →]({{< relref "/getting-started" >}})** Copy a prompt, paste it to your agent, and have your keel vault set up in minutes.
 
 ---
 
@@ -17,20 +19,24 @@ Every AI coding tool invented its own configuration format:
 
 | Tool | Config Location | Format |
 |------|----------------|--------|
-| Cursor | `.cursor/rules/*.mdc` | MDC (Markdown Components) |
+| Cursor | `.cursor/rules/*.mdc` | MDC |
 | GitHub Copilot | `.github/copilot-instructions.md` | Markdown |
 | Claude Code | `CLAUDE.md` | Markdown |
 | Windsurf | `global_rules.md` | Markdown |
 | OpenAI Codex | `AGENTS.md` | Markdown + YAML |
 | Google Jules | `AGENTS.md` | Markdown + YAML |
 
-Each tool has its own format, directory structure, and activation model. Teams using multiple AI assistants maintain duplicate rules across formats, with no single source of truth and no governance over what agents are told to do.
+Each tool has its own format, directory structure, and activation model. Teams using multiple assistants maintain duplicate context across formats, with no single source of truth and no governance over what agents are told to do.
 
 ## Our Approach
 
-Keel implements the [AGENTS.md open standard](https://agents.md/) as a Hugo-powered CMS. Rules are authored as Markdown files with YAML frontmatter — the same format used by AGENTS.md (adopted by 60k+ repos, supported by OpenAI Codex, GitHub Copilot, Google Jules, and Cursor).
+Keel is a markdown vault that serves as the single source of truth for all AI agent context. It manages three content types:
 
-This site renders those rules as a **searchable documentation website for humans**, while the same files serve as **machine-actionable context for AI agents**. A [sync prompt]({{< relref "/sync-prompt" >}}) distributes rules to any project in all supported formats.
+- **Rules** — coding standards agents must follow
+- **Skills** — reusable procedures agents load on-demand
+- **Knowledge** — a persistent wiki agents write and maintain
+
+The vault is an Obsidian-compatible directory of markdown files. Agents read from it directly — no sync needed. A [getting-started prompt]({{< relref "/getting-started" >}}) bootstraps your vault in minutes.
 
 ## Core Principles
 
@@ -38,27 +44,27 @@ This site renders those rules as a **searchable documentation website for humans
 
 ### Declarative & Human-Readable
 
-Rules are natural language Markdown, readable by both humans and agents. No proprietary DSL. No JSON schemas. Just prose that describes how code should be written.
+Everything is natural language Markdown. No proprietary DSL. No JSON schemas. Human-readable, machine-actionable.
 
 <--->
 
 ### Version-Controlled
 
-Rules are code. They live in Git, are reviewed via pull requests, and have full audit history. Every change is traceable.
+All content lives in Git. Changes are reviewed via pull requests. Full audit history. Every edit is traceable.
 
 {{< /columns >}}
 
 {{< columns >}}
 
-### Modular & Composable
+### Three Content Dimensions
 
-Each rule is a standalone file with clear scope defined by glob patterns. Rules can be combined, overridden, and selectively applied.
+Rules *constrain* what agents do. Skills *instruct* how to do specific things. Knowledge *informs* agents with learned context. Each has its own lifecycle and consumption pattern.
 
 <--->
 
-### Hierarchical
+### Agent-First
 
-Base rules apply globally (`alwaysApply: true`). Language-specific and framework-specific rules activate only when matching files are in context. Rules support a [three-layer model]({{< relref "/layering" >}}) — global defaults (`keel/`), organizational standards (`org/`), and local overrides (`local/`) — with higher layers taking precedence on conflicting topics.
+Agents bootstrap the vault, maintain the knowledge wiki, and load skills on-demand. The human's job is to curate, direct, and ask good questions.
 
 {{< /columns >}}
 
@@ -66,75 +72,53 @@ Base rules apply globally (`alwaysApply: true`). Language-specific and framework
 
 ### Tool-Agnostic
 
-One source of truth, multiple outputs. Your AI agent reads the rules and generates AGENTS.md, `.cursor/rules/`, and `.agents/rules/` — adapting to each project's actual stack.
+The same vault serves opencode, Claude Code, Cursor, Copilot, and any other agent. Each tool's native access pattern (skills, rules, prompts) reads from the same source.
 
 <--->
 
 ### Governable
 
-A centralized CMS with sync tooling enforces organizational standards. Teams share a common rule set while retaining the ability to extend it per-project.
+Three content types, three review workflows. Rules go through PRs. Skills go through PRs. Knowledge evolves with agent sessions and human curation.
 
 {{< /columns >}}
 
 ## How It Works
 
-1. **Author rules** in `content/rules/` using Markdown with YAML frontmatter (title, description, globs, alwaysApply, tags)
-2. **Preview** the documentation site locally with `hugo server`
-3. **Distribute** rules to any project — choose the path that fits:
+### Vault Mode (Recommended)
 
-### Cursor Plugin
+1. **Bootstrap** — Paste the getting-started prompt to your agent. It clones keel, asks your preferences, and sets up `~/.keel/`.
+2. **Configure** — Pick a behavior profile (Karpathy, Strict, or Vibe). It becomes your project's AGENTS.md.
+3. **Use** — Agents read rules and knowledge from the vault. Skills load on-demand. Knowledge compounds over time.
 
-Keel can be installed as a [Cursor Plugin](https://cursor.com/docs/plugins) directly from this Git repo.
+No per-project sync. No scripts. Just a path in AGENTS.md.
 
-**Individual install** (any Cursor plan):
+### Project-Local Mode (Optional)
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/paulczar/keel/main/scripts/install-plugin.sh | bash -s -- --clone https://github.com/paulczar/keel
-```
-
-Restart Cursor after installing. You may need to enable **Settings > Features > "Include third-party Plugins, Skills, and other configs"**.
-
-**Team Marketplace** (Teams / Enterprise plans):
-
-1. Go to **Dashboard > Settings > Plugins**
-2. Under **Team Marketplaces**, click **Import**
-3. Paste the repo URL: `https://github.com/paulczar/keel`
-4. Set as **required** (auto-install for all members) or **optional**
-
-Once installed, rules activate per-file based on `globs` and `alwaysApply`, and commands (`/keel-sync`, `/keel-apply`) are available immediately.
-
-### Multi-Tool Sync (`keel-sync.py`)
-
-Use the sync script when you need rules in **Claude Code**, **AGENTS.md**, **GitHub Copilot**, or prefer script-based sync:
+For users who don't want a vault, `keel-sync.py` copies relevant rules directly into a project:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/paulczar/keel/main/scripts/keel-sync.py | python3 - --clone https://github.com/paulczar/keel
 ```
 
-The script inspects your project, selects only relevant rules based on your stack, detects which output formats are needed, and writes rules to the appropriate directories.
+The script inspects your project, selects matching rules, and writes them to `.cursor/rules/`, `.agents/rules/`, or AGENTS.md.
 
-### Rule Format
+### Cursor Plugin
 
-```yaml
----
-title: "TypeScript Standards"
-description: "TypeScript and React coding conventions"
-globs: ["**/*.ts", "**/*.tsx"]
-alwaysApply: false
-tags: ["typescript", "react"]
-weight: 20
----
+Keel can also be installed as a Cursor plugin for automatic rule matching:
 
-Your rule content here in Markdown...
+```bash
+curl -fsSL https://raw.githubusercontent.com/paulczar/keel/main/scripts/install-plugin.sh | bash
 ```
 
-The frontmatter fields map directly to AGENTS.md concepts:
-- **`globs`** — File patterns that activate this rule (AGENTS.md `<rule>` scope)
-- **`alwaysApply`** — Whether the rule applies to all files (AGENTS.md global context)
-- **`tags`** — Categories for filtering and organization
+## Browse
+
+- [Rules]({{< relref "/rules" >}}) — coding standards
+- [Skills]({{< relref "/skills" >}}) — reusable procedures
+- [Knowledge]({{< relref "/knowledge" >}}) — persistent wiki
+- [Behaviors]({{< relref "/behaviors" >}}) — agent profiles
 
 ## References
 
-- [AGENTS.md Open Standard](https://agents.md/) — The Linux Foundation-backed standard for AI agent instructions
-- [AGENTS.md GitHub Repository](https://github.com/anthropics/agents-md) — Specification and community
-- [aicodingrules.org](https://aicodingrules.org) — Community-curated AI coding rules and best practices
+- [AGENTS.md Open Standard](https://agents.md/)
+- [AGENTS.md GitHub Repository](https://github.com/anthropics/agents-md)
+- [aicodingrules.org](https://aicodingrules.org)

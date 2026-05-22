@@ -2,115 +2,101 @@
 
 [https://tech.paulcz.net/keel/](https://tech.paulcz.net/keel/)
 
-**Standardized rules for AI-assisted software development.**
+**Rules, skills, and knowledge for AI-assisted software development.**
 
-Keel is a Hugo-powered CMS that serves as a centralized source of truth for AI coding rules. Write your coding standards once as Markdown; sync them to any project in any format (AGENTS.md, Cursor MDC, Claude Code, Copilot).
+Keel is a cross-agent content management system for everything your AI agents need — coding standards, reusable procedures, and a persistent knowledge wiki. One vault, multiple tools, agent-first setup.
 
-## Prerequisites
+**[Get started →](https://tech.paulcz.net/keel/getting-started/)** Copy a prompt, paste it to your agent, and have your keel vault set up in minutes.
 
-- [Hugo](https://gohugo.io/) v0.129.0+ (extended edition)
-- Git
+## How It Works
 
-## Quick Start
+Keel manages three content types in a single markdown vault:
 
-```bash
-# Clone with submodules (theme)
-git clone --recurse-submodules https://github.com/paulczar/keel.git
-cd keel
+| Type | Purpose | Lifecycle |
+|------|---------|-----------|
+| **Rules** | Coding standards agents must follow | Static, versioned via PRs |
+| **Skills** | Reusable procedures loaded on-demand | Semi-static, updated per workflow |
+| **Knowledge** | Persistent wiki agents write and maintain | Dynamic, constantly evolving |
 
-# Preview locally
-make preview
+The vault lives at `~/.keel/` (or wherever you put it). Your project's AGENTS.md tells agents where to find it. Agents read rules and knowledge directly; skills are loaded lazily via native tooling.
 
-# Build for production
-make build
+## What's in the Vault
+
+```
+~/.keel/
+├── AGENTS.md              ← behavioral profile (pick your agent's style)
+├── content/
+│   ├── keel/              ← git clone of this repo (the framework)
+│   │   ├── rules/         ← coding standards
+│   │   ├── skills/        ← reusable procedures
+│   │   ├── knowledge/     ← persistent wiki
+│   │   └── behaviors/     ← selectable agent profiles
+│   └── local/             ← your personal knowledge (never synced)
 ```
 
-## Usage
+### Behavioral Profiles
 
-### Browsing Rules
+Choose how your agent behaves:
 
-Run `make preview` and open the local site to browse all rules with search, tagging, and navigation.
+- **[Karpathy](https://tech.paulcz.net/keel/behaviors/karpathy/)** — Balanced, cautious. The default.
+- **[Strict](https://tech.paulcz.net/keel/behaviors/strict/)** — Maximum guardrails. Every action confirmed.
+- **[Vibe](https://tech.paulcz.net/keel/behaviors/vibe/)** — Minimal friction. Fast iteration.
 
-### Cursor Plugin (Recommended for Cursor Users)
+Your chosen profile becomes the project's AGENTS.md.
 
-Keel can be installed as a [Cursor Plugin](https://cursor.com/docs/plugins) directly from its Git repo. Choose the method that fits your setup:
+## Vault Mode (Recommended)
 
-**Individual install** (any Cursor plan):
+Set vault path in your project's AGENTS.md and agents find everything:
 
-```bash
-# No clone needed — fetch and install in one step
-curl -fsSL https://raw.githubusercontent.com/paulczar/keel/main/scripts/install-plugin.sh | bash -s -- --clone https://github.com/paulczar/keel
+- **Rules** — agents read from `content/keel/content/rules/`
+- **Skills** — agents load via `skill()` tool from `content/keel/content/skills/`
+- **Knowledge** — agents read and write to `content/keel/content/knowledge/`
+- **Behaviors** — selected profile is the project's AGENTS.md
 
-# Or from a Keel clone
-./scripts/install-plugin.sh
-```
+No per-project sync. No script. Just a path in AGENTS.md.
 
-Restart Cursor after installing. You may need to enable **Settings > Features > "Include third-party Plugins, Skills, and other configs"**.
+## Project-Local Mode (Optional)
 
-**Team Marketplace** (Teams / Enterprise plans):
-
-1. Go to **Dashboard > Settings > Plugins**
-2. Under **Team Marketplaces**, click **Import**
-3. Paste the repo URL: `https://github.com/paulczar/keel`
-4. Set as **required** (auto-install for all members) or **optional**
-
-Once installed, rules activate per-file based on `globs` and `alwaysApply`, and commands (`/keel-sync`, `/keel-apply`) are available immediately.
-
-To use `/keel-sync` when syncing to other projects, add to your shell profile:
+If you don't want a vault, `keel-sync.py` copies relevant rules directly into a project:
 
 ```bash
-export KEEL_PATH=~/.cursor/plugins/keel
+curl -fsSL https://raw.githubusercontent.com/paulczar/keel/main/scripts/keel-sync.py | \
+  python3 - --clone https://github.com/paulczar/keel
 ```
 
-### Syncing Rules to a Project (Multi-Tool)
+The script inspects your project's languages and tooling, selects matching rules, and writes them to `.cursor/rules/`, `.agents/rules/`, or AGENTS.md.
 
-Use `keel-sync.py` when you need rules in **Claude Code**, **AGENTS.md**, **GitHub Copilot**, or prefer script-based sync for Cursor:
+### Cursor Plugin
+
+Keel can also be installed as a Cursor plugin:
 
 ```bash
-# No install needed — run directly with curl
-curl -fsSL https://raw.githubusercontent.com/paulczar/keel/main/scripts/keel-sync.py | python3 - --clone https://github.com/paulczar/keel
-
-# Or from a local Keel clone
-python3 scripts/keel-sync.py --path content/rules --project /path/to/target
-
-# Preview what would change
-python3 scripts/keel-sync.py --clone https://github.com/paulczar/keel --dry-run
+curl -fsSL https://raw.githubusercontent.com/paulczar/keel/main/scripts/install-plugin.sh | bash
 ```
 
-The script auto-detects languages and AI tooling formats, writes matching rules to the appropriate directories, and installs slash commands into `.cursor/commands/`, `.claude/commands/`, and `.github/prompts/`. Run it once per project to install commands.
-
-See the [Sync Prompt](/sync-prompt) page for full details and options.
-
-### Adding a New Rule
+## Adding Content
 
 ```bash
-hugo new --kind rule content/rules/my-rule.md
+# New rule
+hugo new --kind rule content/rules/my-new-rule.md
+
+# New skill
+hugo new --kind skill content/skills/my-new-skill.md
 ```
 
-Edit the generated file, then run `make build` to verify.
+Edit the generated file and run `make build` to verify.
 
-### Dogfooding (Using Rules Locally)
+## Dogfooding
 
 ```bash
-make rules
+# Symlink rules + skills into local tooling
+make dev-sync
 ```
-
-This creates `.cursor/rules/keel/` symlinks pointing to `content/rules/` so Cursor picks up the rules directly. Edit `CURSOR_RULES` in the Makefile to control which rules are active.
-
-## Rule Layering
-
-Rules support three precedence layers:
-
-1. **Local** (`local/`) — project or team-specific. Highest precedence.
-2. **Org** (`org/`) — organizational standards.
-3. **Keel** (`keel/`) — global defaults. Lowest precedence.
-
-See the [Rule Layering](/layering) page for details.
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for how to submit rules, report issues, and set up your development environment.
+See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
-Apache 2.0 — see [LICENSE](LICENSE) for details.
+Apache 2.0 — see [LICENSE](LICENSE).
