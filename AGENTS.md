@@ -2,7 +2,12 @@
 
 ## Project Instructions
 
-- When updating `README.md`, also update `content/_index.md` (the Hugo landing page) to reflect the same changes. These two files describe the same project and must stay in sync. The landing page uses Hugo shortcodes (`{{< columns >}}`, `{{< relref >}}`) — preserve those when editing.
+These docs describe the same project and must stay in sync:
+
+- **`README.md`** ↔ **`content/_index.md`** — The Hugo landing page mirrors the README. When updating one, update the other. The landing page uses Hugo shortcodes (`{{< columns >}}`, `{{< relref >}}`) — preserve those when editing.
+- **`DESIGN.md`** — Architecture reference. When the design changes, check whether README, `content/_index.md`, and `content/getting-started.md` need updates.
+- **`content/getting-started.md`** — Contains the agent bootstrap prompt. The vault structure diagram inside the prompt must match the real vault structure. When adding new content sections (e.g., a new directory under `content/`), update the prompt's tree and the "Next Steps" links.
+- **Directory tree listings** appear in README, `content/_index.md`, `content/getting-started.md`, and `DESIGN.md`. When one tree changes, check all four.
 
 <!-- keel:start - DO NOT EDIT between these markers -->
 ## Rules
