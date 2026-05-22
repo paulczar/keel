@@ -116,6 +116,7 @@ curl -fsSL https://raw.githubusercontent.com/paulczar/keel/main/scripts/install-
 - [Skills]({{< relref "/skills" >}}) — reusable procedures
 - [Knowledge]({{< relref "/knowledge" >}}) — persistent wiki
 - [Behaviors]({{< relref "/behaviors" >}}) — agent profiles
+- [MCP Tools]({{< relref "/mcp" >}}) — recommended MCP servers
 
 ## References
 
