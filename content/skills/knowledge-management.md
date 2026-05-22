@@ -19,11 +19,16 @@ The knowledge wiki is at `content/knowledge/` with two special files:
 
 ## When to write
 
-- **Corrected assumption**: You assumed X but discovered Y. Record the correction immediately.
-- **Non-obvious constraint**: Something easy to unknowingly violate.
-- **Gotcha**: A quirk that cost time to figure out.
+Write knowledge immediately when any of these happen:
+
+- **User corrected you**: You made a mistake or wrong assumption and the user corrected it. This is the strongest signal — write down the correct information right away before moving on. The fact that you were wrong means the knowledge wasn't obvious.
+- **User gave explicit guidance**: The user told you how they want things done (a preference, a pattern, a convention). Record it so you don't need to be told again.
+- **Non-obvious constraint**: Something that would be easy to unknowingly violate.
+- **Gotcha**: A quirk that cost significant time to figure out.
 - **Design rationale**: Why a decision was made, especially if counterintuitive.
 - **Good answers**: A synthesis you produced during a query — file it back as a new page.
+
+If multiple triggers fire at once (e.g., a corrected assumption that's also a gotcha), write a single entry that covers all angles. Don't over-split.
 
 ## How to format
 
