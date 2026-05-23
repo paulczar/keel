@@ -1,6 +1,22 @@
 # Keel v2 Design
 
-Keel v2 is the evolution of keel v1 from a **rule distribution CMS** into a **cross-agent content management system** for rules, skills, and knowledge. Same Hugo site, same sync tooling, same vault-as-source-of-truth approach — expanded to cover the full lifecycle of AI agent context.
+Keel v2 is the evolution of keel v1 from a **rule distribution CMS** into a **cross-agent content management system** for rules, skills, and knowledge. Same Hugo site, same sync tooling, expanded to cover the full lifecycle of AI agent context.
+
+## Two Systems
+
+Keel has two distinct forms depending on who is using it:
+
+| | **Framework repo** (this repo) | **Downstream vault** (`~/.keel/`) |
+|---|---|---|
+| **Is a...** | Source of truth for the framework | Your personal instance |
+| **Rendered as** | Hugo documentation site | Obsidian vault |
+| **Agentic context** | Rules, skills, behaviors, MCP guidance | Chosen behavior profile as AGENTS.md |
+| **Memory system** | Documents how it works | *Is* the memory system |
+| **What goes in** | Rules, skills, behaviors, MCP tool definitions | `content/keel/` (framework clone) + `content/local/` (your knowledge) |
+| **Sync direction** | PR back with improvements | Pull framework updates, keep local private |
+| **Authored by** | Humans (PRs) | Agents + Humans |
+
+The repo **describes** the system. The vault **runs** the system. This distinction resolves a lot of the ambiguity in v1 — the repo doesn't need layers, doesn't host your personal knowledge, and doesn't need to be an Obsidian vault. It ships the blueprint that makes downstream vaults work.
 
 ## Three Content Dimensions
 
@@ -45,10 +61,12 @@ A persistent, interlinked wiki that compounds over time. What agents *have learn
 - Agent writes new pages under `content/knowledge/keel/`
 - Project-specific knowledge lives in the project's own store, not in keel — see below
 
-## Vault Structure
+## Framework Structure
+
+This repo is the framework source — NOT a downstream vault. The downstream vault adds `content/local/` and uses a behavior profile as its AGENTS.md.
 
 ```
-keel/                               ← one vault (global defaults / keel layer)
+keel/                               ← this repo (the framework)
 ├── content/                        ← Hugo source (renders everything)
 │   ├── _index.md                   ← landing page
 │   ├── rules/                      ← rule files
@@ -101,7 +119,7 @@ keel itself does not implement layering. Layering is a **downstream convention**
 │   └── local/
 ```
 
-Each vault is a standalone keel (rules + skills + knowledge). The project's AGENTS.md configures which vaults to consult and in what order. keel-sync.py writes to the `keel/` subdirectory in downstream projects — it owns only that layer.
+Each vault is a standalone keel instance (framework clone + local knowledge). The project's AGENTS.md configures which vaults to consult and in what order. keel-sync.py writes to the `keel/` subdirectory in downstream projects — it owns only that layer.
 
 Rule precedence: higher layer **replaces** lower on the same topic (set in base.md).
 Knowledge precedence: higher layer **augments** lower; contradictions are flagged, not silently resolved (handled by the knowledge-management skill).
@@ -110,7 +128,7 @@ Knowledge precedence: higher layer **augments** lower; contradictions are flagge
 
 ### Vault mode (recommended)
 
-The user maintains a keel vault (e.g., `~/.keel/`). Their AGENTS.md tells agents where the vault lives. Agents read rules, skills, and knowledge directly from the vault. No per-project sync needed — the agent knows the path.
+The user maintains a downstream vault (e.g., `~/.keel/`) with the framework cloned into `content/keel/` and their personal knowledge in `content/local/`. Their project's AGENTS.md tells agents where the vault lives. Agents read rules, skills, and knowledge directly from the vault. No per-project sync needed — the agent knows the path.
 
 Output mapping for vault mode:
 
@@ -210,15 +228,8 @@ Flags are reserved for options ( `--project`, `--dry-run`, `--force`). Subcomman
 
 ### Q5: Obsidian compatibility model
 
-**Decision: keel IS the Obsidian vault.**
+**Decision: The downstream vault is the Obsidian vault, not this repo.**
 
-Open the `keel/` repo directory directly in Obsidian. No sync step needed — the source files ARE the vault.
+The framework repo is a Hugo site — not an Obsidian vault. The downstream vault at `~/.keel/` is the Obsidian vault. It contains the framework as a clone (`content/keel/`) plus personal knowledge (`content/local/`).
 
-| Concern | Resolution |
-|---------|-----------|
-| Hugo `content/` dir | Same markdown files Obsidian reads — no conflict |
-| `.git/`, `public/`, build artifacts | Add to Obsidian's "Excluded files" setting |
-| Symlinks for tool output | Outbound symlinks (`.opencode/skills/` → project) live outside the vault |
-| Hugo shortcodes in content | Obsidian renders them as raw text (harmless); Hugo processes them |
-
-Obsidian is the IDE for humans; Hugo is the publishing pipeline; keel-sync.py is the distro tool. All three read the same files.
+The framework repo's `content/` directory can be opened in Obsidian for editing if desired (same markdown files), but this is a convenience, not the primary model. The downstream vault is where Obsidian's graph view, Dataview queries, and Web Clipper integration live.
