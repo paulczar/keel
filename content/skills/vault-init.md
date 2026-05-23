@@ -13,13 +13,23 @@ Bootstraps a new keel vault at `~/.keel/` (or a custom path). Clones the framewo
 - Git installed
 - Write access to the target directory (default `~/.keel/`)
 
+## Smart detection
+
+Before setting up the vault, check whether this project already has agent configs:
+
+- Does it have an AGENTS.md or CLAUDE.md with local rules?
+- Does it have a `KNOWLEDGE.md`, `content/local/`, or `docs/` with knowledge files?
+- Does it have `.opencode/skills/`, `.cursor/rules/`, or similar tooling configs?
+
+If yes, this project has existing context that should be preserved. **Suggest running vault-migrate instead** — it will migrate the existing configs into the new vault structure. Offer to run vault-init anyway if the user just wants a clean vault without migrating.
+
 ## Steps
 
 ### Step 1: Ask where to put the vault
 
 Ask the user where they want the vault to live. Default is `~/.keel/`.
 
-Validate the path doesn't already exist, or confirm they want to overwrite/reuse it.
+Check if the path already exists. If it does, confirm they want to overwrite/reuse it.
 
 ### Step 2: Clone the framework
 

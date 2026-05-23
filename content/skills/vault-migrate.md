@@ -10,9 +10,8 @@ Converts a project from standalone mode (rules/skills/knowledge inside the proje
 
 ## Prerequisites
 
-- The project has an AGENTS.md or CLAUDE.md
-- The project has local knowledge files (`KNOWLEDGE.md`, `content/local/`, or similar)
-- Python 3 is available (for keel-sync.py if needed)
+- The project has an AGENTS.md or CLAUDE.md (or local knowledge files)
+- Git installed
 
 ## Migration steps
 
@@ -24,17 +23,15 @@ Check if `~/.keel/` exists:
 ls ~/.keel/content/keel/content/skills/ 2>/dev/null
 ```
 
-If the vault exists, skip to Step 3.
+If the vault exists, skip to Step 2.
 
-### Step 2: Bootstrap the vault
+### Step 2: Bootstrap the vault (delegate to vault-init)
 
-If no vault exists, walk the user through bootstrapping one:
+If no vault exists, run vault-init first:
 
-1. Clone keel: `git clone https://github.com/paulczar/keel ~/.keel/content/keel`
-2. Ask which behavior profile they want (Karpathy, Strict, Vibe)
-3. Write the chosen profile to `~/.keel/AGENTS.md`
-4. Create `~/.keel/content/local/` for personal knowledge
-5. Create `~/.keel/.gitignore` with `tmp/`
+1. Tell the user: "No keel vault found. Let's set one up first."
+2. Load the vault-init skill and follow its steps
+3. Return here after the vault is bootstrapped
 
 ### Step 3: Inventory project knowledge
 
