@@ -40,7 +40,7 @@ Restart opencode after adding the config.
 
 ## Usage in keel
 
-When the knowledge-management skill needs to find sources on a topic:
+When the vault-knowledge skill needs to find sources on a topic:
 
 1. Search Brave for the topic
 2. Review the top results by title and snippet
@@ -56,5 +56,5 @@ When verifying a claim during query:
 ## See also
 
 - [Perplexity Search]({{< relref "/mcp/perplexity" >}}) — AI-powered search with synthesized answers
-- [Knowledge Management skill]({{< relref "/skills/knowledge-management" >}})
-- [Sync MCP skill]({{< relref "/skills/sync-mcp" >}})
+- [Knowledge Management skill]({{< relref "/skills/vault-knowledge" >}})
+- [Sync MCP skill]({{< relref "/skills/vault-mcp" >}})

@@ -22,7 +22,7 @@ This installs Context7 for whichever AI agent you're running (opencode, Claude C
 
 ## Usage in keel
 
-When the knowledge-management skill ingests a source about a library or framework, it should:
+When the vault-knowledge skill ingests a source about a library or framework, it should:
 
 1. Use Context7 to fetch current docs for the relevant APIs
 2. Compare the source's claims against current docs
@@ -41,5 +41,5 @@ Context7 works out of the box after `npx ctx7 setup`. No additional configuratio
 
 ## See also
 
-- [Knowledge Management skill]({{< relref "/skills/knowledge-management" >}})
-- [Sync MCP skill]({{< relref "/skills/sync-mcp" >}})
+- [Knowledge Management skill]({{< relref "/skills/vault-knowledge" >}})
+- [Sync MCP skill]({{< relref "/skills/vault-mcp" >}})

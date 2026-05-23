@@ -46,7 +46,7 @@ Reusable procedures loaded on-demand. How to do specific things.
 - Three tiers: **Downloaded** (from keel framework, updated via git), **Built (vault)** (personal library at `content/local/skills/`), **Built (project)** (project-specific at `./local/skills/`)
 - Distributed as symlinks or copies to `.opencode/skills/`, `.claude/skills/`, `.cursor/skills/`
 - Agents load skills lazily via native tool (e.g., opencode `skill()` tool)
-- Agents can create built skills from complex workflows via the skill-builder skill
+- Agents can create built skills from complex workflows via the vault-skill-create skill
 - Each skill is self-contained: instructions + embedded ` ```bash ` or ` ```python ` code blocks
 
 Skills may embed scripts as code blocks. The agent extracts, writes to a temp file, and executes.
@@ -76,7 +76,7 @@ keel/                               ← this repo (the framework)
 │   │   └── typescript.md
 │   ├── skills/                     ← skill files
 │   │   ├── _index.md
-│   │   └── knowledge-management.md
+│   │   └── vault-knowledge.md
 │   └── knowledge/                  ← knowledge wiki pages
 │       ├── _index.md
 │       ├── index.md
@@ -123,7 +123,7 @@ keel itself does not implement layering. Layering is a **downstream convention**
 Each vault is a standalone keel instance (framework clone + local knowledge). The project's AGENTS.md configures which vaults to consult and in what order. keel-sync.py writes to the `keel/` subdirectory in downstream projects — it owns only that layer.
 
 Rule precedence: higher layer **replaces** lower on the same topic (set in base.md).
-Knowledge precedence: higher layer **augments** lower; contradictions are flagged, not silently resolved (handled by the knowledge-management skill).
+Knowledge precedence: higher layer **augments** lower; contradictions are flagged, not silently resolved (handled by the vault-knowledge skill).
 
 ## Two Modes of Use
 
@@ -194,7 +194,7 @@ Exception: if a skill genuinely needs a rule that wouldn't be caught by normal g
 - Explicit `/keel-knowledge-lint` command always available
 - No cron — the vault is passive when no agent is active
 
-The knowledge-management skill encodes the trigger logic. The agent self-decides based on those heuristics.
+The vault-knowledge skill encodes the trigger logic. The agent self-decides based on those heuristics.
 
 ### Q3: Hugo layout for skills
 

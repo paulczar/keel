@@ -49,5 +49,5 @@ When the agent encounters a CLI or web UI during a task:
 ## See also
 
 - [Context7]({{< relref "/mcp/context7" >}}) — doc verification
-- [Knowledge Management skill]({{< relref "/skills/knowledge-management" >}})
-- [Sync MCP skill]({{< relref "/skills/sync-mcp" >}})
+- [Knowledge Management skill]({{< relref "/skills/vault-knowledge" >}})
+- [Sync MCP skill]({{< relref "/skills/vault-mcp" >}})

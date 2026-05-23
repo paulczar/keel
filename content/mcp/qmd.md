@@ -58,7 +58,7 @@ When querying the knowledge wiki:
 3. Read the top-ranked pages from qmd results
 4. Synthesize the answer
 
-The knowledge-management skill should check wiki size and decide which retrieval method to use.
+The vault-knowledge skill should check wiki size and decide which retrieval method to use.
 
 ## Choosing a search tool
 
@@ -74,5 +74,5 @@ qmd is the only one that's fully local and free. It complements Brave and Perple
 
 - [Brave Search]({{< relref "/mcp/brave-search" >}})
 - [Perplexity Search]({{< relref "/mcp/perplexity" >}})
-- [Knowledge Management skill]({{< relref "/skills/knowledge-management" >}})
-- [Sync MCP skill]({{< relref "/skills/sync-mcp" >}})
+- [Knowledge Management skill]({{< relref "/skills/vault-knowledge" >}})
+- [Sync MCP skill]({{< relref "/skills/vault-mcp" >}})

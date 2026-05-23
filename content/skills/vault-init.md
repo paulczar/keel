@@ -1,5 +1,5 @@
 ---
-title: "Init Vault"
+title: "Vault Init"
 description: "Bootstrap a new keel vault from scratch."
 weight: 5
 ---
@@ -99,10 +99,10 @@ Show the user what was set up:
 - Vault location
 - Behavior profile chosen
 - Tools configured
-- Next steps: set vault path in any project's AGENTS.md, run the migrate-to-vault skill for existing projects
+- Next steps: set vault path in any project's AGENTS.md, run the vault-migrate skill for existing projects
 
 ## See also
 
 - [Getting Started]({{< relref "/getting-started" >}}) — human-readable version with bootstrap prompt
-- [Migrate to Vault]({{< relref "/skills/migrate-to-vault" >}}) — convert existing projects to vault mode
-- [Knowledge Management]({{< relref "/skills/knowledge-management" >}}) — using the vault's knowledge wiki
+- [Migrate to Vault]({{< relref "/skills/vault-migrate" >}}) — convert existing projects to vault mode
+- [Knowledge Management]({{< relref "/skills/vault-knowledge" >}}) — using the vault's knowledge wiki

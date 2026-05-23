@@ -84,10 +84,10 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 
 **Wrong assumptions compound. Fix them in long-term storage.**
 
-Load the `knowledge-management` skill for the full process. At minimum:
+Load the `vault-knowledge` skill for the full process. At minimum:
 - Read the knowledge file (path configured above) at the start of every session.
 - When an assumption proves incorrect, add a correction entry before moving on.
-- After a complex task, consider creating a built skill via the `skill-builder` skill.
+- After a complex task, consider creating a built skill via the `vault-skill-create` skill.
 
 ## 7. Periodic Review
 

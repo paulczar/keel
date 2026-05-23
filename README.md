@@ -53,7 +53,7 @@ Set vault path in your project's AGENTS.md and agents find everything:
 - **Skills** — agents load via `skill()` tool from `content/keel/content/skills/`
 - **Knowledge** — agents read and write to `content/keel/content/knowledge/`
 - **Behaviors** — selected profile is the project's AGENTS.md
-- **MCP** — curated MCP tools installable via the sync-mcp skill
+- **MCP** — curated MCP tools installable via the vault-mcp skill
 
 No per-project sync. No script. Just a path in AGENTS.md.
 

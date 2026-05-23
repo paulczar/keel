@@ -1,5 +1,5 @@
 ---
-title: "Migrate to Vault"
+title: "Vault Migrate"
 description: "Migrate a project from project-local mode to keel vault mode."
 weight: 40
 ---
@@ -118,5 +118,5 @@ After migration:
 ## See also
 
 - [Getting Started]({{< relref "/getting-started" >}}) — bootstrap a new vault from scratch
-- [Knowledge Management]({{< relref "/skills/knowledge-management" >}}) — using the vault's knowledge wiki
-- [Skill Builder]({{< relref "/skills/skill-builder" >}}) — creating project or vault-level skills
+- [Knowledge Management]({{< relref "/skills/vault-knowledge" >}}) — using the vault's knowledge wiki
+- [Skill Builder]({{< relref "/skills/vault-skill-create" >}}) — creating project or vault-level skills

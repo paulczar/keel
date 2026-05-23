@@ -1,5 +1,5 @@
 ---
-title: "Sync MCP"
+title: "Vault MCP"
 description: "Install MCP servers and tools from keel's curated MCP directory."
 weight: 20
 ---
@@ -15,7 +15,7 @@ Each file in `content/mcp/` documents a tool with:
 - **Standard install** — a shell command (e.g., `npx ctx7 setup`)
 - **Config** — an optional JSON block for opencode.json MCP server definitions
 
-The sync-mcp skill reads the file, identifies the install method, and executes it.
+The vault-mcp skill reads the file, identifies the install method, and executes it.
 
 ## Usage
 
@@ -68,4 +68,4 @@ To add a tool to keel's MCP directory:
 ## See also
 
 - [MCP Tools directory]({{< relref "/mcp" >}})
-- [Knowledge Management skill]({{< relref "/skills/knowledge-management" >}})
+- [Knowledge Management skill]({{< relref "/skills/vault-knowledge" >}})

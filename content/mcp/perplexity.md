@@ -54,7 +54,7 @@ Both can coexist — use them for different phases of the knowledge workflow.
 
 ## Usage in keel
 
-When the knowledge-management skill needs research on a topic:
+When the vault-knowledge skill needs research on a topic:
 
 1. Ask Perplexity for a synthesized overview with citations
 2. Review the answer and citations
@@ -71,5 +71,5 @@ When verifying a claim during lint:
 ## See also
 
 - [Brave Search]({{< relref "/mcp/brave-search" >}}) — raw web search for source discovery
-- [Knowledge Management skill]({{< relref "/skills/knowledge-management" >}})
-- [Sync MCP skill]({{< relref "/skills/sync-mcp" >}})
+- [Knowledge Management skill]({{< relref "/skills/vault-knowledge" >}})
+- [Sync MCP skill]({{< relref "/skills/vault-mcp" >}})

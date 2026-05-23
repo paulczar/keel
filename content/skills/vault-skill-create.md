@@ -1,5 +1,5 @@
 ---
-title: "Skill Builder"
+title: "Vault Skill Create"
 description: "Create built skills from complex workflows, corrections, and repeatable tasks."
 weight: 30
 ---
@@ -81,5 +81,5 @@ When a user corrects you while using a built skill:
 
 ## See also
 
-- [Knowledge Management]({{< relref "/skills/knowledge-management" >}}) — when to capture knowledge vs build a skill
-- [Sync MCP]({{< relref "/skills/sync-mcp" >}}) — installing tool MCP servers
+- [Knowledge Management]({{< relref "/skills/vault-knowledge" >}}) — when to capture knowledge vs build a skill
+- [Sync MCP]({{< relref "/skills/vault-mcp" >}}) — installing tool MCP servers
