@@ -133,6 +133,7 @@ The knowledge wiki is for persistent, curated facts. For "what did we discuss la
 
 - **Obsidian Web Clipper** — browser extension that converts web articles to markdown. Clip into `content/knowledge/unsorted/` for the agent to process later during a slurp.
 - **Agent-created skills** — see the skill-builder skill for saving complex workflows as reusable procedures.
+- **Migrate to vault** — see the migrate-to-vault skill for converting a project-local setup.
 
 ## Contributing back to keel
 
