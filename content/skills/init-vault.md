@@ -1,0 +1,108 @@
+---
+title: "Init Vault"
+description: "Bootstrap a new keel vault from scratch."
+weight: 5
+---
+
+# Init Vault
+
+Bootstraps a new keel vault at `~/.keel/` (or a custom path). Clones the framework, picks a behavior profile, sets up the directory structure, and configures local tooling.
+
+## Prerequisites
+
+- Git installed
+- Write access to the target directory (default `~/.keel/`)
+
+## Steps
+
+### Step 1: Ask where to put the vault
+
+Ask the user where they want the vault to live. Default is `~/.keel/`.
+
+Validate the path doesn't already exist, or confirm they want to overwrite/reuse it.
+
+### Step 2: Clone the framework
+
+```bash
+git clone https://github.com/paulczar/keel <vault>/content/keel
+```
+
+### Step 3: Pick a behavior profile
+
+Show the user the available profiles and ask which they want:
+
+- **Karpathy** — Balanced, cautious. Good default.
+- **Strict** — Maximum guardrails. Production/regulated environments.
+- **Vibe** — Minimal friction. Prototypes, personal projects.
+
+Copy the chosen profile to `<vault>/AGENTS.md`.
+
+### Step 4: Create local directories
+
+```bash
+mkdir -p <vault>/content/local/knowledge
+mkdir -p <vault>/content/local/skills
+```
+
+### Step 5: Set up gitignore
+
+```bash
+cat > <vault>/.gitignore << 'EOF'
+tmp/
+EOF
+```
+
+### Step 6: Ask about git remotes
+
+Ask if the user wants to set up any git remotes (e.g., their own fork for personalizing the framework). If yes, ask for the remote URL and add it to the keel clone:
+
+```bash
+cd <vault>/content/keel
+git remote add fork <url>
+```
+
+### Step 7: Ask about AI tools
+
+Ask which AI tools the user uses (opencode, Claude Code, Cursor, Copilot, etc.) and install vault skills into each:
+
+**For opencode:**
+
+```bash
+cd <project>
+mkdir -p .opencode/skills
+for skill in <vault>/content/keel/content/skills/*.md; do
+  name=$(basename "$skill" .md)
+  [ "$name" = "_index" ] && continue
+  mkdir -p ".opencode/skills/$name"
+  ln -sf "$skill" ".opencode/skills/$name/SKILL.md"
+done
+```
+
+**For Claude Code:**
+
+```bash
+mkdir -p .claude/skills
+# Similar symlink pattern
+```
+
+**For Cursor:**
+
+```bash
+mkdir -p .cursor/rules/keel
+# Symlink rules from the vault
+```
+
+### Step 8: Summary
+
+Show the user what was set up:
+
+- Vault location
+- Behavior profile chosen
+- Tools configured
+- Next steps: set vault path in any project's AGENTS.md, run the migrate-to-vault skill for existing projects
+
+## See also
+
+- [Getting Started]({{< relref "/getting-started" >}}) — human-readable version with bootstrap prompt
+- [Migrate to Vault]({{< relref "/skills/migrate-to-vault" >}}) — convert existing projects to vault mode
+- [Knowledge Management]({{< relref "/skills/knowledge-management" >}}) — using the vault's knowledge wiki
