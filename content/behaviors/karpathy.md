@@ -87,6 +87,11 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 Load the `knowledge-management` skill for the full process. At minimum:
 - Read the knowledge file (path configured above) at the start of every session.
 - When an assumption proves incorrect, add a correction entry before moving on.
+- After a complex task, consider creating a built skill via the `skill-builder` skill.
+
+## 7. Periodic Review
+
+Every ~10 turns, scan the conversation for information that should be saved — corrections, guidance, gotchas, repeatable workflows. Don't let important context disappear into chat history.
 
 ---
 

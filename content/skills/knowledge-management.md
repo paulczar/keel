@@ -103,9 +103,36 @@ At the end of a multi-step session or when the wiki feels large:
 - Merge related entries
 - If `index.md` gets long, archive old sections
 
+## Periodic Review Nudge
+
+Every ~10 turns of conversation, do a quick scan of the session so far. Look for:
+
+- User corrections or guidance you haven't saved yet
+- Gotchas or constraints you discovered
+- Complex workflows the user walked you through
+- Decisions made that should be documented
+
+If you find anything, write it to the knowledge wiki. This prevents the session from ending with important context still only in the conversation history.
+
+## Consolidation
+
+The wiki has no hard size limit, but as it grows, retrieval slows down. When the wiki feels large (index.md is long, log.md has many entries):
+
+1. Merge related entries — e.g., three "project uses X" facts into one comprehensive entry
+2. Archive old log entries to `log.archive.md`
+3. Split large pages into sub-pages with cross-references
+4. Rebuild `index.md` to reflect the consolidated structure
+
+Consolidation is the wiki equivalent of memory compaction. Do it during lint or when you notice retrieval slowing down.
+
+## Session Recall
+
+The knowledge wiki is for persistent, curated facts. For "what did we discuss last week?" recall, the agent can search its past conversation history if the tool provides session search (e.g., FTS5 full-text search over past sessions). This is complementary — the wiki holds what's been distilled; session search holds what was said.
+
 ## Tips
 
 - **Obsidian Web Clipper** — browser extension that converts web articles to markdown. Clip into `content/knowledge/unsorted/` for the agent to process later during a slurp.
+- **Agent-created skills** — see the skill-builder skill for saving complex workflows as reusable procedures.
 
 ## Contributing back to keel
 

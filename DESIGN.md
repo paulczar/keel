@@ -43,10 +43,11 @@ Reusable procedures loaded on-demand. How to do specific things.
 
 - Authored as SKILL.md with opencode-compatible frontmatter (`name`, `description`, `compatibility`)
 - Stored in `content/skills/` for Hugo rendering
+- Three tiers: **Downloaded** (from keel framework, updated via git), **Built (vault)** (personal library at `content/local/skills/`), **Built (project)** (project-specific at `./local/skills/`)
 - Distributed as symlinks or copies to `.opencode/skills/`, `.claude/skills/`, `.cursor/skills/`
 - Agents load skills lazily via native tool (e.g., opencode `skill()` tool)
+- Agents can create built skills from complex workflows via the skill-builder skill
 - Each skill is self-contained: instructions + embedded ` ```bash ` or ` ```python ` code blocks
-- Layer precedence is handled downstream — see below
 
 Skills may embed scripts as code blocks. The agent extracts, writes to a temp file, and executes.
 
