@@ -21,7 +21,7 @@ Before setting up the vault, check whether this project already has agent config
 - Does it have a `KNOWLEDGE.md`, `content/local/`, or `docs/` with knowledge files?
 - Does it have `.opencode/skills/`, `.cursor/rules/`, or similar tooling configs?
 
-If yes, this project has existing context that should be preserved. **Suggest running vault-migrate instead** — it will migrate the existing configs into the new vault structure. Offer to run vault-init anyway if the user just wants a clean vault without migrating.
+If yes, this project has existing context that should be preserved. **Suggest running vault-project-migrate instead** — it will migrate the existing configs into the new vault structure. Offer to run vault-init anyway if the user just wants a clean vault without migrating.
 
 ## Steps
 
@@ -109,10 +109,10 @@ Show the user what was set up:
 - Vault location
 - Behavior profile chosen
 - Tools configured
-- Next steps: set vault path in any project's AGENTS.md, run the vault-migrate skill for existing projects
+- Next steps: set vault path in any project's AGENTS.md, run the vault-project-migrate skill for existing projects
 
 ## See also
 
 - [Getting Started]({{< relref "/getting-started" >}}) — human-readable version with bootstrap prompt
-- [Migrate to Vault]({{< relref "/skills/vault-migrate" >}}) — convert existing projects to vault mode
+- [Migrate to Vault]({{< relref "/skills/vault-project-migrate" >}}) — convert existing projects to vault mode
 - [Knowledge Management]({{< relref "/skills/vault-knowledge" >}}) — using the vault's knowledge wiki

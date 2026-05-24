@@ -1,5 +1,5 @@
 ---
-title: "Vault Migrate"
+title: "Vault Project Migrate"
 description: "Migrate a project from project-local mode to keel vault mode."
 weight: 40
 ---

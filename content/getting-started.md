@@ -63,7 +63,7 @@ After the agent finishes, you'll have a working keel vault. From there:
 - View the documentation site by running `hugo server` in `content/keel/`
 - Install recommended MCP tools via the vault-mcp skill
 - Set your vault path in any project's AGENTS.md to use it in vault mode
-- Have an existing project? Use the **vault-migrate** skill to convert it
+- Have an existing project? Use the **vault-project-migrate** skill to convert it
 
 ## Next Steps
 
@@ -72,7 +72,7 @@ After the agent finishes, you'll have a working keel vault. From there:
 - **Learn about the [knowledge wiki]({{< relref "/knowledge" >}})** — persistent agent memory
 - **Learn about [behavior profiles]({{< relref "/behaviors" >}})** — choose your agent's style
 - **Learn about [MCP tools]({{< relref "/mcp" >}})** — recommended MCP servers for knowledge management
-- **Migrate an existing project** with the [vault-migrate skill]({{< relref "/skills/vault-migrate" >}})
+- **Migrate an existing project** with the [vault-project-migrate skill]({{< relref "/skills/vault-project-migrate" >}})
 - **Read the [design document](https://github.com/paulczar/keel/blob/main/DESIGN.md)** — full architecture
 
 ## Manual Setup
