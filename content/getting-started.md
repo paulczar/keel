@@ -36,11 +36,6 @@ The vault will look like this:
 ~/.keel/
 ├── AGENTS.md              ← behavioral guidelines (picked from profiles)
 ├── keel/                  ← git clone of keel repo (the framework)
-│   ├── rules/             ← coding standards
-│   ├── skills/            ← reusable procedures
-│   ├── knowledge/         ← persistent wiki
-│   ├── behaviors/         ← selectable agent profiles
-│   └── mcp/               ← recommended MCP tools
 ├── local/                 ← my personal knowledge
 │   └── knowledge/
 ├── .gitignore
