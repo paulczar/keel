@@ -25,14 +25,13 @@ The vault lives at `~/.keel/` (or wherever you put it). Your project's AGENTS.md
 ```
 ~/.keel/
 ├── AGENTS.md              ← behavioral profile (pick your agent's style)
-├── content/
-│   ├── keel/              ← git clone of this repo (the framework)
-│   │   ├── rules/         ← coding standards
-│   │   ├── skills/        ← reusable procedures
-│   │   ├── knowledge/     ← persistent wiki
-│   │   ├── behaviors/     ← selectable agent profiles
-│   │   └── mcp/           ← recommended MCP tools
-│   └── local/             ← your personal knowledge (never synced)
+├── keel/                  ← git clone of this repo (the framework)
+│   ├── rules/             ← coding standards
+│   ├── skills/            ← reusable procedures
+│   ├── knowledge/         ← persistent wiki
+│   ├── behaviors/         ← selectable agent profiles
+│   └── mcp/               ← recommended MCP tools
+└── local/                 ← your personal knowledge (never synced)
 ```
 
 ### Behavioral Profiles
@@ -49,9 +48,9 @@ Your chosen profile becomes the project's AGENTS.md.
 
 Set vault path in your project's AGENTS.md and agents find everything:
 
-- **Rules** — agents read from `content/keel/content/rules/`
-- **Skills** — agents load via `skill()` tool from `content/keel/content/skills/`
-- **Knowledge** — agents read and write to `content/keel/content/knowledge/`
+- **Rules** — agents read from `keel/content/rules/`
+- **Skills** — agents load via `skill()` tool from `keel/content/skills/`
+- **Knowledge** — agents read and write to `keel/content/knowledge/`
 - **Behaviors** — selected profile is the project's AGENTS.md
 - **MCP** — curated MCP tools installable via the vault-mcp skill
 

@@ -12,8 +12,8 @@ Creates reusable skills from work you've done. Turns complex workflows, correcte
 
 | Tier | Location | Owner | Updated by |
 |------|----------|-------|------------|
-| **Downloaded** | `content/keel/content/skills/<name>/SKILL.md` | Keel framework | `git pull` to keel clone; PR improvements upstream |
-| **Built (vault)** | `content/local/skills/<name>/SKILL.md` | You (personal library) | Agent creates/edits, you confirm |
+| **Downloaded** | `keel/content/skills/<name>/SKILL.md` | Keel framework | `git pull` to keel clone; PR improvements upstream |
+| **Built (vault)** | `local/skills/<name>/SKILL.md` | You (personal library) | Agent creates/edits, you confirm |
 | **Built (project)** | `./local/skills/<name>/SKILL.md` | Project team | Agent creates/edits, committed with project |
 
 Downloaded skills come from the keel framework. Built skills are created by the agent from your sessions.
@@ -34,7 +34,7 @@ If the user has opted into auto-create (configured in AGENTS.md or vault prefere
 
 1. Detect that a skill-worthy event occurred (see above)
 2. Ask the user: "This looks like a reusable workflow. Want me to create a skill for it?"
-3. If yes, ask: "Should this be project-local (`./local/skills/`), vault-wide (`content/local/skills/`), or should we PR it to the keel framework?"
+3. If yes, ask: "Should this be project-local (`./local/skills/`), vault-wide (`local/skills/`), or should we PR it to the keel framework?"
 4. Write the skill using the standard SKILL.md format
 5. If project-level, add it to the project's AGENTS.md or skill directory reference
 6. If vault-level, it's available across all projects that reference the vault

@@ -18,7 +18,7 @@ Bootstraps a new keel vault at `~/.keel/` (or a custom path). Clones the framewo
 Before setting up the vault, check whether this project already has agent configs:
 
 - Does it have an AGENTS.md or CLAUDE.md with local rules?
-- Does it have a `KNOWLEDGE.md`, `content/local/`, or `docs/` with knowledge files?
+- Does it have a `KNOWLEDGE.md`, `local/`, or `docs/` with knowledge files?
 - Does it have `.opencode/skills/`, `.cursor/rules/`, or similar tooling configs?
 
 If yes, this project has existing context that should be preserved. **Suggest running vault-project-migrate instead** — it will migrate the existing configs into the new vault structure. Offer to run vault-init anyway if the user just wants a clean vault without migrating.
@@ -34,7 +34,7 @@ Check if the path already exists. If it does, confirm they want to overwrite/reu
 ### Step 2: Clone the framework
 
 ```bash
-git clone https://github.com/paulczar/keel <vault>/content/keel
+git clone https://github.com/paulczar/keel <vault>/keel
 ```
 
 ### Step 3: Pick a behavior profile
@@ -50,8 +50,8 @@ Copy the chosen profile to `<vault>/AGENTS.md`.
 ### Step 4: Create local directories
 
 ```bash
-mkdir -p <vault>/content/local/knowledge
-mkdir -p <vault>/content/local/skills
+mkdir -p <vault>/local/knowledge
+mkdir -p <vault>/local/skills
 ```
 
 ### Step 5: Set up gitignore
@@ -67,7 +67,7 @@ EOF
 Ask if the user wants to set up any git remotes (e.g., their own fork for personalizing the framework). If yes, ask for the remote URL and add it to the keel clone:
 
 ```bash
-cd <vault>/content/keel
+cd <vault>/keel
 git remote add fork <url>
 ```
 
@@ -80,7 +80,7 @@ Ask which AI tools the user uses (opencode, Claude Code, Cursor, Copilot, etc.) 
 ```bash
 cd <project>
 mkdir -p .opencode/skills
-for skill in <vault>/content/keel/content/skills/*.md; do
+for skill in <vault>/keel/content/skills/*.md; do
   name=$(basename "$skill" .md)
   [ "$name" = "_index" ] && continue
   mkdir -p ".opencode/skills/$name"

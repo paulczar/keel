@@ -12,7 +12,7 @@ Keel has two distinct forms depending on who is using it:
 | **Rendered as** | Hugo documentation site | Obsidian vault |
 | **Agentic context** | Rules, skills, behaviors, MCP guidance | Chosen behavior profile as AGENTS.md |
 | **Memory system** | Documents how it works | *Is* the memory system |
-| **What goes in** | Rules, skills, behaviors, MCP tool definitions | `content/keel/` (framework clone) + `content/local/` (your knowledge) |
+| **What goes in** | Rules, skills, behaviors, MCP tool definitions | `keel/` (framework clone) + `local/` (your knowledge) |
 | **Sync direction** | PR back with improvements | Pull framework updates, keep local private |
 | **Authored by** | Humans (PRs) | Agents + Humans |
 
@@ -43,7 +43,7 @@ Reusable procedures loaded on-demand. How to do specific things.
 
 - Authored as SKILL.md with opencode-compatible frontmatter (`name`, `description`, `compatibility`)
 - Stored in `content/skills/` for Hugo rendering
-- Three tiers: **Downloaded** (from keel framework, updated via git), **Built (vault)** (personal library at `content/local/skills/`), **Built (project)** (project-specific at `./local/skills/`)
+- Three tiers: **Downloaded** (from keel framework, updated via git), **Built (vault)** (personal library at `local/skills/`), **Built (project)** (project-specific at `./local/skills/`)
 - Distributed as symlinks or copies to `.opencode/skills/`, `.claude/skills/`, `.cursor/skills/`
 - Agents load skills lazily via native tool (e.g., opencode `skill()` tool)
 - Agents can create built skills from complex workflows via the vault-skill-create skill
@@ -64,7 +64,7 @@ A persistent, interlinked wiki that compounds over time. What agents *have learn
 
 ## Framework Structure
 
-This repo is the framework source — NOT a downstream vault. The downstream vault adds `content/local/` and uses a behavior profile as its AGENTS.md.
+This repo is the framework source — NOT a downstream vault. The downstream vault adds `local/` and uses a behavior profile as its AGENTS.md.
 
 ```
 keel/                               ← this repo (the framework)
@@ -129,7 +129,7 @@ Knowledge precedence: higher layer **augments** lower; contradictions are flagge
 
 ### Vault mode (recommended)
 
-The user maintains a downstream vault (e.g., `~/.keel/`) with the framework cloned into `content/keel/` and their personal knowledge in `content/local/`. Their project's AGENTS.md tells agents where the vault lives. Agents read rules, skills, and knowledge directly from the vault. No per-project sync needed — the agent knows the path.
+The user maintains a downstream vault (e.g., `~/.keel/`) with the framework cloned into `keel/` and their personal knowledge in `local/`. Their project's AGENTS.md tells agents where the vault lives. Agents read rules, skills, and knowledge directly from the vault. No per-project sync needed — the agent knows the path.
 
 Output mapping for vault mode:
 
@@ -231,6 +231,6 @@ Flags are reserved for options ( `--project`, `--dry-run`, `--force`). Subcomman
 
 **Decision: The downstream vault is the Obsidian vault, not this repo.**
 
-The framework repo is a Hugo site — not an Obsidian vault. The downstream vault at `~/.keel/` is the Obsidian vault. It contains the framework as a clone (`content/keel/`) plus personal knowledge (`content/local/`).
+The framework repo is a Hugo site — not an Obsidian vault. The downstream vault at `~/.keel/` is the Obsidian vault. It contains the framework as a clone (`keel/`) plus personal knowledge (`local/`).
 
 The framework repo's `content/` directory can be opened in Obsidian for editing if desired (same markdown files), but this is a convenience, not the primary model. The downstream vault is where Obsidian's graph view, Dataview queries, and Web Clipper integration live.

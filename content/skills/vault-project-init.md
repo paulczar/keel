@@ -20,7 +20,7 @@ Sets up a new or existing project to use a keel vault. Creates AGENTS.md, symlin
 Check for the vault at `~/.keel/`:
 
 ```bash
-ls ~/.keel/content/keel/ 2>/dev/null
+ls ~/.keel/keel/ 2>/dev/null
 ```
 
 If not found, suggest running vault-init first.
@@ -49,8 +49,8 @@ This project uses keel vault mode.
 ## Knowledge sources (precedence order)
 
 1. `./local/knowledge/` — project-specific (highest)
-2. `~/.keel/content/local/knowledge/` — personal vault
-3. `~/.keel/content/keel/content/knowledge/` — keel framework (lowest)
+2. `~/.keel/local/knowledge/` — personal vault
+3. `~/.keel/keel/content/knowledge/` — keel framework (lowest)
 ```
 
 ### Step 4: Install vault skills into project tooling
@@ -60,7 +60,7 @@ Symlink vault skills so the project's agents can load them:
 ```bash
 # For opencode
 mkdir -p .opencode/skills
-for skill in ~/.keel/content/keel/content/skills/*.md; do
+for skill in ~/.keel/keel/content/skills/*.md; do
   name=$(basename "$skill" .md)
   [ "$name" = "_index" ] && continue
   mkdir -p ".opencode/skills/$name"

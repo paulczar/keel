@@ -21,7 +21,7 @@ I'm setting up a keel vault. Keel is a cross-agent content management system for
 ## What you'll do
 
 1. Ask me where I want the vault to live (default: ~/.keel)
-2. Clone the keel repository into `<vault>/content/keel/`
+2. Clone the keel repository into `<vault>/keel/`
 3. Ask me which AI tools I use (opencode, Claude Code, Cursor, Copilot, etc.)
 4. Show me the available behavior profiles and ask which one I want as my default
 5. Ask if I want to set up any git remotes (e.g., my own fork for personalizations)
@@ -35,21 +35,20 @@ The vault will look like this:
 ```
 ~/.keel/
 ├── AGENTS.md              ← behavioral guidelines (picked from profiles)
-├── content/
-│   ├── keel/              ← git clone of keel repo (the framework)
-│   │   ├── rules/         ← coding standards
-│   │   ├── skills/        ← reusable procedures
-│   │   ├── knowledge/     ← persistent wiki
-│   │   ├── behaviors/     ← selectable agent profiles
-│   │   └── mcp/           ← recommended MCP tools
-│   └── local/             ← my personal knowledge
-│       └── knowledge/
+├── keel/                  ← git clone of keel repo (the framework)
+│   ├── rules/             ← coding standards
+│   ├── skills/            ← reusable procedures
+│   ├── knowledge/         ← persistent wiki
+│   ├── behaviors/         ← selectable agent profiles
+│   └── mcp/               ← recommended MCP tools
+├── local/                 ← my personal knowledge
+│   └── knowledge/
 ├── .gitignore
 └── README.md
 ```
 
-`content/keel/` is the keel framework — I can update it by pulling from upstream.
-`content/local/` is mine — never suggest syncing it anywhere.
+`keel/` is the keel framework — I can update it by pulling from upstream.
+`local/` is mine — never suggest syncing it anywhere.
 
 ## What to ask me
 
@@ -60,7 +59,7 @@ Then ask each question one at a time. Don't batch them.
 
 After the agent finishes, you'll have a working keel vault. From there:
 - Open the vault in Obsidian to browse rules, skills, and knowledge
-- View the documentation site by running `hugo server` in `content/keel/`
+- View the documentation site by running `hugo server` in `keel/`
 - Install recommended MCP tools via the vault-mcp skill
 - Set your vault path in any project's AGENTS.md to use it in vault mode
 - Have an existing project? Use the **vault-project-migrate** skill to convert it
@@ -80,8 +79,8 @@ After the agent finishes, you'll have a working keel vault. From there:
 If you prefer to set up manually:
 
 ```bash
-git clone https://github.com/paulczar/keel ~/.keel/content/keel
-mkdir -p ~/.keel/content/local/knowledge
+git clone https://github.com/paulczar/keel ~/.keel/keel
+mkdir -p ~/.keel/local/knowledge
 # Then pick a behavior profile and write it to ~/.keel/AGENTS.md
-cp ~/.keel/content/keel/content/behaviors/karpathy.md ~/.keel/AGENTS.md
+cp ~/.keel/keel/content/behaviors/karpathy.md ~/.keel/AGENTS.md
 ```
