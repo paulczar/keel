@@ -6,7 +6,7 @@
 
 Keel is a cross-agent content management system for everything your AI agents need — coding standards, reusable procedures, and a persistent knowledge wiki. One vault, multiple tools, agent-first setup.
 
-**[Get started →](https://tech.paulcz.net/keel/getting-started/)** Copy a prompt, paste it to your agent, and have your keel vault set up in minutes.
+**[Get started →](content/getting-started.md)** Copy a prompt, paste it to your agent, and have your keel vault set up in minutes.
 
 ## How It Works
 

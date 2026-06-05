@@ -15,13 +15,13 @@ Alternatively, browse the steps yourself and decide what to use.
 
 Copy everything between the lines below and paste it to your agent:
 
-```
+````
 I'm setting up a keel vault. Keel is a cross-agent content management system for AI coding rules, skills, and knowledge — think of it as a centralized wiki for all the context your AI agents need.
 
 ## What you'll do
 
-1. Clone the keel repository from https://github.com/paulczar/keel
-2. Ask me where I want the vault to live (default: ~/.keel)
+1. Ask me where I want the vault to live (default: ~/.keel)
+2. Clone the keel repository into `<vault>/content/keel/`
 3. Ask me which AI tools I use (opencode, Claude Code, Cursor, Copilot, etc.)
 4. Show me the available behavior profiles and ask which one I want as my default
 5. Ask if I want to set up any git remotes (e.g., my own fork for personalizations)
@@ -56,7 +56,7 @@ The vault will look like this:
 Start with: "I'll clone keel and set up your vault. First, where should it live? (default: ~/.keel)"
 
 Then ask each question one at a time. Don't batch them.
-```
+````
 
 After the agent finishes, you'll have a working keel vault. From there:
 - Open the vault in Obsidian to browse rules, skills, and knowledge
