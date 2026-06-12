@@ -32,10 +32,32 @@ If the vault is behind upstream, suggest pulling: `git pull`.
 
 ### Step 3: Rebuild skill symlinks
 
-Remove old symlinks and recreate from current vault:
+Detect which installation method was used previously (check `~/.config/opencode/skills/` for global, `.opencode/skills/` for per-project) and rebuild from current vault.
+
+**For global install:**
 
 ```bash
-# Find and update opencode skills
+mkdir -p ~/.config/opencode/skills
+for skill in <vault>/keel/content/skills/*.md; do
+  name=$(basename "$skill" .md)
+  [ "$name" = "_index" ] && continue
+  mkdir -p "${HOME}/.config/opencode/skills/${name}"
+  desc=$(head -5 "$skill" | grep 'description:' | sed 's/description: *"\(.*\)"/\1/')
+  body=$(sed '1,/^---$/d' "$skill" | sed '1,/^---$/d')
+  cat > "${HOME}/.config/opencode/skills/${name}/SKILL.md" << SKILLEOF
+---
+name: ${name}
+description: ${desc}
+---
+
+${body}
+SKILLEOF
+done
+```
+
+**For per-project install:**
+
+```bash
 mkdir -p .opencode/skills
 for skill in <vault>/keel/content/skills/*.md; do
   name=$(basename "$skill" .md)

@@ -79,8 +79,32 @@ When an assumption proves incorrect, add a correction to the appropriate knowled
 
 Symlink or copy keel skills so the project's agents can load them:
 
+Ask the user whether they want skills **globally** (personal profile) or **per-project** (committed with the repo).
+
+**For opencode (global):**
+
 ```bash
-# For opencode
+mkdir -p ~/.config/opencode/skills
+for skill in ~/.keel/keel/content/skills/*.md; do
+  name=$(basename "$skill" .md)
+  [ "$name" = "_index" ] && continue
+  mkdir -p "${HOME}/.config/opencode/skills/${name}"
+  desc=$(head -5 "$skill" | grep 'description:' | sed 's/description: *"\(.*\)"/\1/')
+  body=$(sed '1,/^---$/d' "$skill" | sed '1,/^---$/d')
+  cat > "${HOME}/.config/opencode/skills/${name}/SKILL.md" << SKILLEOF
+---
+name: ${name}
+description: ${desc}
+---
+
+${body}
+SKILLEOF
+done
+```
+
+**For opencode (per-project):**
+
+```bash
 mkdir -p .opencode/skills
 for skill in ~/.keel/keel/content/skills/*.md; do
   name=$(basename "$skill" .md)
@@ -88,10 +112,13 @@ for skill in ~/.keel/keel/content/skills/*.md; do
   mkdir -p ".opencode/skills/$name"
   ln -sf "$skill" ".opencode/skills/$name/SKILL.md"
 done
+```
 
-# For Claude Code (if used)
-mkdir -p .claude/skills
-# Symlink similarly
+**For Claude Code (if used):**
+
+```bash
+mkdir -p ~/.claude/skills
+# Same pattern as opencode global into ~/.claude/skills/<name>/SKILL.md
 ```
 
 ### Step 7: Report

@@ -73,12 +73,35 @@ git remote add fork <url>
 
 ### Step 7: Ask about AI tools
 
-Ask which AI tools the user uses (opencode, Claude Code, Cursor, Copilot, etc.) and install vault skills into each:
+Ask which AI tools the user uses (opencode, Claude Code, Cursor, Copilot, etc.) and install vault skills into each.
 
-**For opencode:**
+**For opencode (ask: global profile or per-project?):**
+
+Install globally to `~/.config/opencode/skills/` so skills are available in every project:
 
 ```bash
-cd <project>
+mkdir -p ~/.config/opencode/skills
+for skill in <vault>/keel/content/skills/*.md; do
+  name=$(basename "$skill" .md)
+  [ "$name" = "_index" ] && continue
+  mkdir -p "${HOME}/.config/opencode/skills/${name}"
+  # Convert Hugo frontmatter (title, description) to OpenCode frontmatter (name, description)
+  desc=$(head -5 "$skill" | grep 'description:' | sed 's/description: *"\(.*\)"/\1/')
+  body=$(sed '1,/^---$/d' "$skill" | sed '1,/^---$/d')
+  cat > "${HOME}/.config/opencode/skills/${name}/SKILL.md" << SKILLEOF
+---
+name: ${name}
+description: ${desc}
+---
+
+${body}
+SKILLEOF
+done
+```
+
+If they prefer per-project (e.g., for team repos), symlink into `.opencode/skills/` instead:
+
+```bash
 mkdir -p .opencode/skills
 for skill in <vault>/keel/content/skills/*.md; do
   name=$(basename "$skill" .md)
@@ -91,8 +114,8 @@ done
 **For Claude Code:**
 
 ```bash
-mkdir -p .claude/skills
-# Similar symlink pattern
+mkdir -p ~/.claude/skills
+# Same pattern as opencode global, into ~/.claude/skills/<name>/SKILL.md
 ```
 
 **For Cursor:**

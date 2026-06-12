@@ -55,10 +55,32 @@ This project uses keel vault mode.
 
 ### Step 4: Install vault skills into project tooling
 
-Symlink vault skills so the project's agents can load them:
+Ask the user whether they want skills installed **globally** (personal profile, all projects) or **per-project** (committed with the repo).
+
+**For opencode (global):**
 
 ```bash
-# For opencode
+mkdir -p ~/.config/opencode/skills
+for skill in ~/.keel/keel/content/skills/*.md; do
+  name=$(basename "$skill" .md)
+  [ "$name" = "_index" ] && continue
+  mkdir -p "${HOME}/.config/opencode/skills/${name}"
+  desc=$(head -5 "$skill" | grep 'description:' | sed 's/description: *"\(.*\)"/\1/')
+  body=$(sed '1,/^---$/d' "$skill" | sed '1,/^---$/d')
+  cat > "${HOME}/.config/opencode/skills/${name}/SKILL.md" << SKILLEOF
+---
+name: ${name}
+description: ${desc}
+---
+
+${body}
+SKILLEOF
+done
+```
+
+**For opencode (per-project):**
+
+```bash
 mkdir -p .opencode/skills
 for skill in ~/.keel/keel/content/skills/*.md; do
   name=$(basename "$skill" .md)

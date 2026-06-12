@@ -28,6 +28,11 @@ I'm setting up a keel vault. Keel is a cross-agent content management system for
 6. Set up the vault directory structure
 7. Install the initial configs
 
+Then, based on the AI tools I told you about, install the vault skills into the right location:
+  - **OpenCode**: `~/.config/opencode/skills/<name>/SKILL.md` (global) or `.opencode/skills/<name>/SKILL.md` (per-project)
+  - **Claude Code**: `~/.claude/skills/<name>/SKILL.md`
+  - **Cursor**: `.cursor/rules/keel/`
+
 ## Vault structure
 
 The vault will look like this:
